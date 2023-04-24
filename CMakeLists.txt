@@ -13,7 +13,7 @@ find_package(Qt6 COMPONENTS
         Widgets
         REQUIRED)
 
-add_executable(Slosh main.cpp)
+add_executable(Slosh main.cpp icons/icons.qrc widgets/Window.h widgets/Window.cpp widgets/toolbar/Toolbar.h widgets/toolbar/Toolbar.cpp widgets/toolbar/ToolbarButton.h widgets/toolbar/ToolbarButton.cpp widgets/Canvas.h widgets/Canvas.cpp)
 target_link_libraries(Slosh
         Qt::Core
         Qt::Gui
