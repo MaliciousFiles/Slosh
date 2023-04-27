@@ -7,7 +7,7 @@
 
 Canvas::Canvas(QWidget *parent) : QWidget(parent) {
     QPalette pal;
-    pal.setColor(QPalette::Window, Qt::red);
+    pal.setColor(QPalette::Window, Qt::lightGray);
     setAutoFillBackground(true);
     setPalette(pal);
 }

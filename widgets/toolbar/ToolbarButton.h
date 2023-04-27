@@ -8,12 +8,16 @@
 
 #include <QPushButton>
 #include <QWidget>
+#include "ToolbarActions.h"
 
+class ToolbarActions;
 class ToolbarButton : public QPushButton {
     Q_OBJECT
 
 public:
-    explicit ToolbarButton(const QString& ico, QSize size, QWidget *parent = nullptr);
+    const ToolbarActions* action;
+
+    ToolbarButton(QWidget *parent, const QString &ico, QSize size, ToolbarActions *action);
 };
 
 

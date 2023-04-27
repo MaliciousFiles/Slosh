@@ -8,7 +8,8 @@
 
 #include <QWidget>
 #include "toolbar/Toolbar.h"
-#include "Canvas.h"
+#include "sidebar/Sidebar.h"
+#include "canvas/Canvas.h"
 
 class Window : public QWidget {
     Q_OBJECT
@@ -18,7 +19,10 @@ public:
 
 private:
     Toolbar *toolbar;
+    Sidebar *sidebar;
     Canvas *canvas;
+
+    void mouseReleaseEvent(QMouseEvent* event) override;
 };
 
 

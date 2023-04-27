@@ -1,5 +1,6 @@
 <!DOCTYPE RCC><RCC version="1.0">
     <qresource prefix="/icons">
         <file alias="Add Fluid">add_fluid.png</file>
+        <file alias="Remove Fluid">remove_fluid.png</file>
     </qresource>
 </RCC>

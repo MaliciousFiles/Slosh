@@ -7,6 +7,8 @@
 
 
 #include <QWidget>
+#include <map>
+#include "ToolbarActions.h"
 #include "ToolbarButton.h"
 
 class Toolbar : public QWidget {
@@ -15,8 +17,15 @@ class Toolbar : public QWidget {
 public:
     explicit Toolbar(QWidget *parent = nullptr);
 
+signals:
+    void actionChanged(const ToolbarActions* action);
+
+public slots:
+    void onButtonClick();
+
 private:
-    ToolbarButton* addFluid;
+    std::map<ToolbarActions*, ToolbarButton*> buttons;
+    ToolbarButton* active;
 };
 
 
