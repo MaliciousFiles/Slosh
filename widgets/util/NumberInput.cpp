@@ -16,7 +16,7 @@ NumberInput::NumberInput(Qt::Orientation orientation, QWidget *parent) : QWidget
 
     auto layout = new QHBoxLayout(this);
     layout->setContentsMargins(0, 0, 0, 0);
-    layout->addWidget(slider, 6);
+    layout->addWidget(slider, 5);
     layout->addWidget(input, 1);
     setLayout(layout);
 
@@ -24,10 +24,10 @@ NumberInput::NumberInput(Qt::Orientation orientation, QWidget *parent) : QWidget
     connect(slider, &QSlider::valueChanged, this, &NumberInput::sliderValueChanged);
 }
 
-void NumberInput::inputValueChanged(const QString& value) {
+void NumberInput::inputValueChanged(const QString& value) const {
     slider->setValue(value.toInt());
 }
 
-void NumberInput::sliderValueChanged(const int &value) {
+void NumberInput::sliderValueChanged(const int &value) const {
     input->setText(QString::number(value));
 }

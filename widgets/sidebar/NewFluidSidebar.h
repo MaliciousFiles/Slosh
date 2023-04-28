@@ -17,7 +17,7 @@ public:
 
 private:
     QComboBox *pickFluid;
-    NumberInput *mass;
+    NumberInput *volume;
 };
 
 

@@ -5,5 +5,9 @@
 #include "SidebarWidget.h"
 
 SidebarWidget::SidebarWidget(QWidget *parent) : QWidget(parent) {
-    setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum));
+    QPalette pal;
+    pal.setColor(QPalette::WindowText, Qt::white);
+    setPalette(pal);
+
+    setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
 }

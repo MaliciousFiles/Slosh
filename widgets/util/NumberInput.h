@@ -20,8 +20,8 @@ public:
     TextInput* input;
 
 public slots:
-    void inputValueChanged(const QString& value);
-    void sliderValueChanged(const int& value);
+    void inputValueChanged(const QString& value) const;
+    void sliderValueChanged(const int& value) const;
 };
 
 

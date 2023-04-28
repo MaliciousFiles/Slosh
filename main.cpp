@@ -1,12 +1,11 @@
 #include <QApplication>
-#include <QPushButton>
 #include "widgets/Window.h"
-#include "api/FluidData.h"
+#include "api/MaterialData.h"
 
 int main(int argc, char *argv[]) {
     QApplication a(argc, argv);
 
-    FluidData::initFluids();
+    MaterialData::initFluids();
 
     Window w;
     w.showMaximized();
