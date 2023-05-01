@@ -25,6 +25,6 @@ int Container::getVolume() const {
 
 int Container::getFilledVolume() {
     int o = 0;
-    for (auto &substance : substances) o += substance.getVolume();
+    for (auto &substance : substances) o += substance->getVolume();
     return o;
 }
