@@ -7,6 +7,7 @@
 
 
 #include <QPushButton>
+#include <QLabel>
 #include <QWidget>
 #include "ToolbarActions.h"
 
@@ -17,7 +18,7 @@ class ToolbarButton : public QPushButton {
 public:
     const ToolbarActions* action;
 
-    ToolbarButton(QWidget *parent, const QString &ico, QSize size, ToolbarActions *action);
+    ToolbarButton(QWidget *parent, const QString& name, Qt::Key key, const QString &ico, QSize size, ToolbarActions *action);
 };
 
 

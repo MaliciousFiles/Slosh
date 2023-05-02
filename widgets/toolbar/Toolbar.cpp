@@ -4,6 +4,7 @@
 
 #include <QGridLayout>
 #include <QStyle>
+#include <QShortcut>
 #include "Toolbar.h"
 
 Toolbar::Toolbar(QWidget *parent) : QWidget(parent), active(nullptr) {
@@ -29,6 +30,8 @@ Toolbar::Toolbar(QWidget *parent) : QWidget(parent), active(nullptr) {
     pal.setColor(QPalette::Window, Qt::darkGray);
     setAutoFillBackground(true);
     setPalette(pal);
+
+    new QShortcut(QKeySequence(Qt::Key_Escape), this, [this](){if (active) active->click();});
 }
 
 void Toolbar::onButtonClick() {

@@ -19,7 +19,7 @@ public:
     static const ToolbarActions* REMOVE_FLUID;
     static const ToolbarActions* EDIT_FLUID;
 
-    const QString icon;
+    const QString name;
     const Qt::Key key;
     const std::function<SidebarWidget*(QWidget*)> sidebarWidget;
 
@@ -27,7 +27,7 @@ public:
 
 private:
 //    SidebarWidget* sideWidget;
-    ToolbarActions(QString icon, Qt::Key key, std::function<SidebarWidget*(QWidget*)> widgetSupplier = [] (QWidget* p) {return nullptr;});
+    ToolbarActions(QString name, Qt::Key key, std::function<SidebarWidget*(QWidget*)> widgetSupplier = [] (QWidget* p) {return nullptr;});
 };
 
 

@@ -5,7 +5,7 @@
 #include "ToolbarButton.h"
 #include <QStyle>
 
-ToolbarButton::ToolbarButton(QWidget *parent, const QString &ico, QSize size, ToolbarActions *action)
+ToolbarButton::ToolbarButton(QWidget *parent, const QString& name, Qt::Key key, const QString &ico, QSize size, ToolbarActions *action)
         : QPushButton(parent), action(action) {
     QPixmap pixmap(":/icons/"+ico);
     QIcon icon(pixmap);
@@ -15,4 +15,6 @@ ToolbarButton::ToolbarButton(QWidget *parent, const QString &ico, QSize size, To
     setFixedSize(size);
     setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum));
     setStyleSheet(QString("background-color: %1;").arg(QColor(Qt::lightGray).name()));
+
+    setToolTip(name+" ("+(char) key+")");
 }

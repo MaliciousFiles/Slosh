@@ -11,12 +11,12 @@ const ToolbarActions* ToolbarActions::ADD_FLUID = new ToolbarActions("Add Fluid"
 const ToolbarActions* ToolbarActions::REMOVE_FLUID = new ToolbarActions("Remove Fluid", Qt::Key_R);
 const ToolbarActions* ToolbarActions::EDIT_FLUID = new ToolbarActions("Edit Fluid", Qt::Key_E);
 
-ToolbarActions::ToolbarActions(QString icon, Qt::Key key, std::function<SidebarWidget*(QWidget*)> widgetSupplier) : icon(std::move(icon)), key(key), sidebarWidget(std::move(widgetSupplier)) {
+ToolbarActions::ToolbarActions(QString name, Qt::Key key, std::function<SidebarWidget*(QWidget*)> widgetSupplier) : name(std::move(name)), key(key), sidebarWidget(std::move(widgetSupplier)) {
     ALL.push_back(this);
 };
 
 ToolbarButton *ToolbarActions::widget(QWidget *parent, QSize size) {
-    auto b = new ToolbarButton(parent, icon, size, this);
+    auto b = new ToolbarButton(parent, name, key, name, size, this);
 
     new QShortcut(QKeySequence(key), b, b, &ToolbarButton::click);
 
