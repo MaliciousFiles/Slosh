@@ -17,15 +17,17 @@ public:
     static std::vector<ToolbarActions*> ALL;
     static const ToolbarActions* ADD_FLUID;
     static const ToolbarActions* REMOVE_FLUID;
+    static const ToolbarActions* EDIT_FLUID;
 
     const QString icon;
+    const Qt::Key key;
     const std::function<SidebarWidget*(QWidget*)> sidebarWidget;
 
     ToolbarButton* widget(QWidget* parent, QSize size);
 
 private:
 //    SidebarWidget* sideWidget;
-    explicit ToolbarActions(QString icon, std::function<SidebarWidget*(QWidget*)> widgetSupplier = [] (QWidget* p) {return nullptr;}) : icon(std::move(icon)), sidebarWidget(std::move(widgetSupplier)) { ALL.push_back(this); };
+    ToolbarActions(QString icon, Qt::Key key, std::function<SidebarWidget*(QWidget*)> widgetSupplier = [] (QWidget* p) {return nullptr;});
 };
 
 

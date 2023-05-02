@@ -2,5 +2,6 @@
     <qresource prefix="/icons">
         <file alias="Add Fluid">add_fluid.png</file>
         <file alias="Remove Fluid">remove_fluid.png</file>
+        <file alias="Edit Fluid">edit_fluid.png</file>
     </qresource>
 </RCC>
