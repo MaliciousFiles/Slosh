@@ -6,6 +6,8 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
+# need this on Windows for some reason
+list(APPEND CMAKE_PREFIX_PATH "C:\\Qt\\6.5.0\\msvc2019_64\\lib\\cmake")
 
 find_package(Qt6 COMPONENTS
         Core
@@ -20,3 +22,6 @@ target_link_libraries(Slosh
         Qt::Widgets
         )
 
+if (WIN32)
+    add_custom_command(TARGET Slosh POST_BUILD COMMAND windeployqt Slosh.exe)
+endif (WIN32)

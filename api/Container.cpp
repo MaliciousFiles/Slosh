@@ -6,6 +6,7 @@
 
 void Container::addSubstance(Substance* substance) {
     substances.push_back(substance);
+
 }
 
 void Container::removeSubstance(Substance* substance) {
@@ -19,12 +20,20 @@ Substance* Container::getSubstance(MaterialData* material) {
     });
 }
 
+void Container::setTemperature(double temp) {
+    temperature = temp;
+}
+
+double Container::getTemperature() const {
+    return temperature;
+}
+
 int Container::getVolume() const {
     return volume;
 }
 
 int Container::getFilledVolume() {
     int o = 0;
-    for (auto &substance : substances) o += substance.getVolume();
+    for (auto &substance : substances) o += substance->getVolume();
     return o;
 }

@@ -6,7 +6,7 @@ void MaterialData::initFluids() {
     // TODO: read from a file or something
     (new MaterialData("Water"))->init();
     (new MaterialData("Oil"))->init();
-    (new MaterialData("Ammonia Nitrate"))->init();
+    (new MaterialData("Ammonium Nitrate"))->init();
 }
 
 void MaterialData::init() {

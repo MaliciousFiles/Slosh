@@ -6,9 +6,14 @@
 #define SLOSH_CHEMISTRYHELPER_H
 
 
+#include "../api/Substance.h"
+
 class ChemistryHelper {
 
-
+public:
+    static double getActivationEnergy(double temp, Substance* s1, Substance* s2) {
+        return 0;
+    }
 };
 
 
