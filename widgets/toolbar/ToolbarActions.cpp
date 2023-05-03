@@ -5,6 +5,7 @@
 #include <QShortcut>
 #include "ToolbarActions.h"
 #include "../sidebar/NewFluidSidebar.h"
+#include "../sidebar/NewContainerSidebar.h"
 
 std::vector<ToolbarActions*> ToolbarActions::ALL = std::vector<ToolbarActions*>();
 const ToolbarActions* ToolbarActions::ADD_FLUID = new ToolbarActions("Add Fluid", Qt::Key_A, [] (QWidget* p){return new NewFluidSidebar(p);});
