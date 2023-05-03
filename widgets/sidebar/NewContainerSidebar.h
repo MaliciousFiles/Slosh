@@ -8,6 +8,7 @@
 #include <QComboBox>
 #include "SidebarWidget.h"
 #include "../util/NumberInput.h"
+#include <QCheckBox>
 
 class NewContainerSidebar : public SidebarWidget {
     Q_OBJECT
@@ -17,6 +18,7 @@ public:
 
 private:
     NumberInput *temperature;
+    QCheckBox *lid;
 };
 
 
