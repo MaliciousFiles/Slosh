@@ -18,6 +18,7 @@ public:
     static const ToolbarActions* ADD_FLUID;
     static const ToolbarActions* REMOVE_FLUID;
     static const ToolbarActions* EDIT_FLUID;
+    static const ToolbarActions* EDIT_CONTAINER;
 
     const QString name;
     const Qt::Key key;
