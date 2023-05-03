@@ -10,7 +10,7 @@ std::vector<ToolbarActions*> ToolbarActions::ALL = std::vector<ToolbarActions*>(
 const ToolbarActions* ToolbarActions::ADD_FLUID = new ToolbarActions("Add Fluid", Qt::Key_A, [] (QWidget* p){return new NewFluidSidebar(p);});
 const ToolbarActions* ToolbarActions::REMOVE_FLUID = new ToolbarActions("Remove Fluid", Qt::Key_R);
 const ToolbarActions* ToolbarActions::EDIT_FLUID = new ToolbarActions("Edit Fluid", Qt::Key_E);
-const ToolbarActions* ToolbarActions::EDIT_CONTAINER = new ToolbarActions("Edit Container" Qt::Key_C, [] (QWidget* p){return new NewContainerSidebar(p);});
+const ToolbarActions* ToolbarActions::EDIT_CONTAINER = new ToolbarActions("Edit Container", Qt::Key_C, [] (QWidget* p){return new NewContainerSidebar(p);});
 
 ToolbarActions::ToolbarActions(QString name, Qt::Key key, std::function<SidebarWidget*(QWidget*)> widgetSupplier) : name(std::move(name)), key(key), sidebarWidget(std::move(widgetSupplier)) {
     ALL.push_back(this);
