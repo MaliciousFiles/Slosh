@@ -8,8 +8,11 @@ public:
     static void initFluids();
 
     const std::string name;
+    const double density; // g/mL (or g/cm^3)
+    const double molarMass; // g/mol
+    const double enthalpyFormation; // kJ/mol (liquid)
+    const double entropy; // J/mol*K (liquid)
 private:
-    // TODO: make this take in various stats about the fluid (like name)
-    MaterialData(std::string  name) : name(std::move(name)) {};
+    MaterialData(std::string name, double density, double molarMass, double enthalpyFormation, double entropy) : name(std::move(name)), density(density), molarMass(molarMass), enthalpyFormation(enthalpyFormation), entropy(entropy) {};
     void init();
 };

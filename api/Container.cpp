@@ -7,6 +7,8 @@
 void Container::addSubstance(Substance* substance) {
     substances.push_back(substance);
 
+    // TODO: use ChemistryHelper#getChemicalEquation and ChemistryHelper#getGibbs to determine
+    // TODO: the most thermodynamically favorable, and enact it
 }
 
 void Container::removeSubstance(Substance* substance) {

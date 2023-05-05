@@ -8,12 +8,15 @@
 #include <QString>
 #include <QtGui>
 
+const GlobalClickHandler* GlobalClickHandler::instance = nullptr;
+
 bool GlobalClickHandler::eventFilter(QObject* obj, QEvent* event) {
-    if (event->type() == QEvent::mousePressEvent) {
-        if(event->button() == Qt::LeftButton){
-            qDebug()<<"Left Click";
-            return true;
-        }
+    if (event->type() == QEvent::MouseButtonPress) {
+        auto mouseEvent = (QMouseEvent*) event;
+
+        bool consume = false;
+        emit(objectClicked(obj, mouseEvent->button(), consume));
+        return consume;
     }
 
     return QObject::eventFilter(obj, event);
