@@ -1,3 +1,6 @@
+#ifndef SLOSH_MATERIALDATA_H
+#define SLOSH_MATERIALDATA_H
+
 #include <map>
 #include <string>
 #include <utility>
@@ -16,3 +19,5 @@ private:
     MaterialData(std::string name, double density, double molarMass, double enthalpyFormation, double entropy) : name(std::move(name)), density(density), molarMass(molarMass), enthalpyFormation(enthalpyFormation), entropy(entropy) {};
     void init();
 };
+
+#endif // SLOSH_MATERIALDATA_H

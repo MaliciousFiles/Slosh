@@ -7,12 +7,16 @@
 
 
 #include <QWidget>
+#include "Container.h"
+
 
 class Canvas : public QWidget {
     Q_OBJECT
+    std::vector<Container*> containedContainers;
 
 public:
     explicit Canvas(QWidget *parent = nullptr);
+    void addContainer(int volume);
 };
 
 
