@@ -18,18 +18,30 @@
 
 class Container : public QWidget {
     Q_OBJECT;
+
+    const static double WH_RATIO; // w/h
+    const static double PIXELS_PER_CM; // px/cm
+    const static double WALL_WIDTH; // px
+
     std::vector<Substance*> storedSubstances;
-    int volume;
-    double width;
-    double height;
-    const static double WH_RATIO;
+    int volume; // in mL (aka cm^3)
+    double width; // in pixels
+    double height; // in pixels
+    bool lidded = false;
+    double temperature = 250;
 
 public:
-    Container(QWidget *parent, int volume);
+    explicit Container(int volume, QWidget *parent = nullptr);
     void insertSubstance(Substance* substance, int index);
     bool removeSubstance(int index);
     Substance* getSubstance(int index);
     void paintEvent(QPaintEvent *event) override;
+
+    void setLidded(bool hasLid);
+    inline bool hasLid() const { return lidded; }
+
+    void setTemperature(double temp);
+    inline double getTemperature() const { return temperature; }
 };
 
 

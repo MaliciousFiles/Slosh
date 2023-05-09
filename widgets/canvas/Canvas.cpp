@@ -11,11 +11,16 @@ Canvas::Canvas(QWidget *parent) : QWidget(parent) {
     setAutoFillBackground(true);
     setPalette(pal);
 
-    addContainer(250);
+    addContainer(250)->move(this->width()/2, this->height()/2);
 }
 
-void Canvas::addContainer(int volume){
-    auto *newContainer = new Container(this, volume);
-    newContainer->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
-    containedContainers.push_back(newContainer);
+Container* Canvas::addContainer(int volume){
+    auto *container = new Container(volume, this);
+    containers.push_back(container);
+
+    return container;
+}
+
+std::vector<Container *> Canvas::getContainers() {
+    return containers;
 }

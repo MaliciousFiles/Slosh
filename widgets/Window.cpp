@@ -16,7 +16,7 @@ Window::Window(QWidget *parent) : QWidget(parent) {
 
     connect(toolbar, &Toolbar::actionChanged, this,
             [&] (const ToolbarActions* action) {
-                   sidebar->setSidebarWidget(action ? action->sidebarWidget(sidebar) : nullptr);
+                   sidebar->setSidebarWidget(action ? action->sidebarWidget(this) : nullptr);
     });
 
     auto layout = new QGridLayout();

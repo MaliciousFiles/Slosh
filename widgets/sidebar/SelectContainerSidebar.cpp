@@ -1,0 +1,74 @@
+//
+// Created by Oakley Randle on 5/3/23.
+//
+
+#include <QFormLayout>
+#include <QLabel>
+#include "../../api/MaterialData.h"
+#include "SelectContainerSidebar.h"
+#include "../../util/GlobalClickHandler.h"
+
+
+SelectContainerSidebar::SelectContainerSidebar(Canvas* canvas, QWidget *parent) : SidebarWidget(parent) {
+    temperature = new NumberInput(this);
+    temperature->slider->setRange(0, 500);
+    temperature->slider->setTickInterval(50);
+    temperature->slider->setTickPosition(QSlider::TicksBelow);
+    temperature->slider->setValue(300);
+
+    lid = new QCheckBox(this);
+
+    auto layout = new QFormLayout(this);
+    layout->setContentsMargins(0, 30, 10, 0);
+    layout->setVerticalSpacing(10);
+    layout->addWidget(new QLabel("Select a Container"));
+    layout->addRow(tr("Temp (k)"), temperature);
+    layout->addRow(tr("Lid"), lid);
+    setLayout(layout);
+
+    setLayoutVisible(false);
+
+    connect(temperature->slider, &QSlider::valueChanged, this, [this] (int value) {
+        if (selected) selected->setTemperature(value);
+    });
+    connect(lid, &QCheckBox::stateChanged, this, [this] (int value) {
+        if (selected) selected->setLidded(value);
+    });
+
+    connect(GlobalClickHandler::instance, &GlobalClickHandler::objectClicked, this, [this, canvas](QObject* obj, Qt::MouseButton button, bool& consume) {
+        if (button == Qt::LeftButton) {
+            bool found = false;
+
+            for (auto container: canvas->getContainers()) {
+                if (container == lastClicked) {
+                    found = true;
+                    setSelected(container);
+                }
+            }
+
+            if (!found && obj == canvas) {
+                setSelected(nullptr);
+            }
+
+            lastClicked = obj;
+        }
+    });
+}
+
+void SelectContainerSidebar::setSelected(Container* container) {
+    selected = container;
+
+    setLayoutVisible(container != nullptr);
+
+    if (container) {
+        temperature->slider->setValue(container->getTemperature());
+        lid->setChecked(container->hasLid());
+    }
+}
+
+void SelectContainerSidebar::setLayoutVisible(bool visible) {
+    auto* form = (QFormLayout*) layout();
+
+    form->setRowVisible(0, !visible);
+    for (int i = 1; i < form->rowCount(); i++) form->setRowVisible(i, visible);
+}

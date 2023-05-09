@@ -12,11 +12,13 @@
 
 class Canvas : public QWidget {
     Q_OBJECT
-    std::vector<Container*> containedContainers;
+
+    std::vector<Container*> containers;
 
 public:
     explicit Canvas(QWidget *parent = nullptr);
-    void addContainer(int volume);
+    Container* addContainer(int volume);
+    std::vector<Container*> getContainers();
 };
 
 
