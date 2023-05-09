@@ -14,7 +14,11 @@ SelectContainerSidebar::SelectContainerSidebar(Canvas* canvas, QWidget *parent) 
     temperature->slider->setRange(0, 500);
     temperature->slider->setTickInterval(50);
     temperature->slider->setTickPosition(QSlider::TicksBelow);
-    temperature->slider->setValue(300);
+
+    volume = new NumberInput(this);
+    volume->slider->setRange(50, 1500);
+    volume->slider->setTickInterval(145);
+    volume->slider->setTickPosition(QSlider::TicksBelow);
 
     lid = new QCheckBox(this);
 
@@ -22,12 +26,16 @@ SelectContainerSidebar::SelectContainerSidebar(Canvas* canvas, QWidget *parent) 
     layout->setContentsMargins(0, 30, 10, 0);
     layout->setVerticalSpacing(10);
     layout->addWidget(new QLabel("Select a Container"));
+    layout->addRow(tr("Vol (mL)"), volume);
     layout->addRow(tr("Temp (k)"), temperature);
     layout->addRow(tr("Lid"), lid);
     setLayout(layout);
 
     setLayoutVisible(false);
 
+    connect(volume->slider, &QSlider::valueChanged, this, [this] (int value) {
+        if (selected) selected->setVolume(value);
+    });
     connect(temperature->slider, &QSlider::valueChanged, this, [this] (int value) {
         if (selected) selected->setTemperature(value);
     });
@@ -61,6 +69,7 @@ void SelectContainerSidebar::setSelected(Container* container) {
     setLayoutVisible(container != nullptr);
 
     if (container) {
+        volume->slider->setValue(container->getVolume());
         temperature->slider->setValue(container->getTemperature());
         lid->setChecked(container->hasLid());
     }

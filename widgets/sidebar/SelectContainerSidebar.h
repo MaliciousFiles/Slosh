@@ -25,6 +25,7 @@ private:
     Container* selected;
     QObject* lastClicked;
     NumberInput *temperature;
+    NumberInput *volume;
     QCheckBox *lid;
 };
 

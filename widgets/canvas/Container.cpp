@@ -3,13 +3,22 @@
 //
 
 #include "Container.h"
+#include "../../api/ChemicalEquation.h"
+#include "../../util/ChemistryHelper.h"
 #include <QtGui>
 
 const double Container::WH_RATIO = 0.75;
 const double Container::PIXELS_PER_CM = 30;
 const double Container::WALL_WIDTH = 10;
 
-Container::Container(int volume, QWidget *parent) : QWidget(parent), volume(volume), lidded(false) {
+Container::Container(int volume, QWidget *parent) : QWidget(parent), lidded(false), temperature(250) {
+    setMouseTracking(true);
+    setVolume(volume);
+}
+
+void Container::setVolume(double volume) {
+    this->volume = volume;
+
     width = cbrt(WH_RATIO*volume);
     height = PIXELS_PER_CM * volume/pow(width, 2);
     width *= PIXELS_PER_CM;
@@ -18,15 +27,20 @@ Container::Container(int volume, QWidget *parent) : QWidget(parent), volume(volu
 }
 
 void Container::insertSubstance(Substance* substance, int index){
+    ChemicalEquation* equation = ChemistryHelper::getChemicalEquation(substances.data(), substances.size());
 
+    if (ChemistryHelper::getGibbs(temperature, equation) < 0) {
+        // TODO: enact reaction
+        qDebug() << "Reaction occurred";
+    }
 }
 
 bool Container::removeSubstance(int index){
-    return false;
+    return substances.erase(std::next(substances.begin(), index)) != substances.end();
 }
 
 Substance* Container::getSubstance(int index){
-    return nullptr;
+    return substances.at(index);
 }
 
 void Container::setLidded(bool hasLid) {
@@ -77,5 +91,42 @@ void Container::paintEvent(QPaintEvent *event){
     painter.setPen(QPen(QColor(60, 60, 60), 1));
     for (int i = 0; i < 500; i+=10) {
         painter.drawLine(width+3, height-pixelsPerDegree*i-1, width+5, height-pixelsPerDegree*i-1);
+    }
+}
+
+void Container::mousePressEvent(QMouseEvent* event) {
+    if (event->button() == Qt::LeftButton && cursor() == Qt::OpenHandCursor) {
+        dragStartPos = pos();
+
+        setCursor(Qt::ClosedHandCursor);
+    }
+    event->setAccepted(false);
+}
+
+void Container::mouseMoveEvent(QMouseEvent* event) {
+    if (!lidded && event->position().y() < WALL_WIDTH) {
+        setCursor(Qt::ArrowCursor);
+        return;
+    }
+
+    setCursor(event->buttons() & Qt::LeftButton ? Qt::ClosedHandCursor : Qt::OpenHandCursor);
+
+    if (event->buttons() & Qt::LeftButton) {
+        QEventPoint point = event->point(0);
+
+        QPoint newPos = (dragStartPos + point.globalPosition() - point.globalPressPosition()).toPoint();
+
+        newPos.setX(std::clamp(newPos.x(), 0, parentWidget()->width() - rect().width()));
+        newPos.setY(std::clamp(newPos.y(), 0, parentWidget()->height() - rect().height()));
+
+        move(newPos);
+    }
+}
+
+void Container::mouseReleaseEvent(QMouseEvent* event) {
+    if (event->button() == Qt::LeftButton && cursor() == Qt::ClosedHandCursor) {
+        dragStartPos = QPointF();
+
+        setCursor(Qt::OpenHandCursor);
     }
 }

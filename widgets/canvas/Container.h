@@ -23,12 +23,17 @@ class Container : public QWidget {
     const static double PIXELS_PER_CM; // px/cm
     const static double WALL_WIDTH; // px
 
-    std::vector<Substance*> storedSubstances;
-    int volume; // in mL (aka cm^3)
+    std::vector<Substance*> substances;
+    double volume; // in mL (aka cm^3)
     double width; // in pixels
     double height; // in pixels
-    bool lidded = false;
-    double temperature = 250;
+    double temperature; // in K
+    bool lidded;
+
+    QPointF dragStartPos;
+    void mousePressEvent(QMouseEvent* event) override;
+    void mouseMoveEvent(QMouseEvent* event) override;
+    void mouseReleaseEvent(QMouseEvent* event) override;
 
 public:
     explicit Container(int volume, QWidget *parent = nullptr);
@@ -36,6 +41,9 @@ public:
     bool removeSubstance(int index);
     Substance* getSubstance(int index);
     void paintEvent(QPaintEvent *event) override;
+
+    void setVolume(double volume);
+    inline double getVolume() const { return volume; }
 
     void setLidded(bool hasLid);
     inline bool hasLid() const { return lidded; }
