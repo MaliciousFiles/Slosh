@@ -11,6 +11,8 @@
 #include "ToolbarActions.h"
 #include "ToolbarButton.h"
 
+class ToolbarActions;
+class ToolbarButton;
 class Toolbar : public QWidget {
     Q_OBJECT
 

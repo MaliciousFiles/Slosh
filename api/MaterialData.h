@@ -1,3 +1,6 @@
+#ifndef SLOSH_MATERIALDATA_H
+#define SLOSH_MATERIALDATA_H
+
 #include <map>
 #include <string>
 #include <utility>
@@ -16,3 +19,5 @@ private:
     MaterialData(std::string  name, std::string formula, int molarmass, std::string compound) : name(std::move(name)), formula(std::move(formula)), molarmass(std::move(molarmass)), compound(std::move(compound)) {};
     void init();
 };
+
+#endif // SLOSH_MATERIALDATA_H

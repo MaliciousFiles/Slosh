@@ -10,8 +10,11 @@
 #include <utility>
 #include "ToolbarButton.h"
 #include "../sidebar/SidebarWidget.h"
+#include "../Window.h"
 
 class ToolbarButton;
+class Window;
+
 class ToolbarActions {
 public:
     static std::vector<ToolbarActions*> ALL;
@@ -22,13 +25,12 @@ public:
 
     const QString name;
     const Qt::Key key;
-    const std::function<SidebarWidget*(QWidget*)> sidebarWidget;
+    const std::function<SidebarWidget*(Window*)> sidebarWidget;
 
     ToolbarButton* widget(QWidget* parent, QSize size);
 
 private:
-//    SidebarWidget* sideWidget;
-    ToolbarActions(QString name, Qt::Key key, std::function<SidebarWidget*(QWidget*)> widgetSupplier = [] (QWidget* p) {return nullptr;});
+    ToolbarActions(QString name, Qt::Key key, std::function<SidebarWidget*(Window*)> widgetSupplier = [] (Window* w) {return nullptr;});
 };
 
 

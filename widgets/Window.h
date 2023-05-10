@@ -11,11 +11,18 @@
 #include "sidebar/Sidebar.h"
 #include "canvas/Canvas.h"
 
+class Toolbar;
+class Sidebar;
+class Canvas;
+
 class Window : public QWidget {
     Q_OBJECT
 
 public:
     explicit Window(QWidget *parent = nullptr);
+    inline Toolbar* getToolbar() { return toolbar; }
+    inline Sidebar* getSidebar() { return sidebar; }
+    inline Canvas* getCanvas() { return canvas; }
 
 private:
     Toolbar *toolbar;
