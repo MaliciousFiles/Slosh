@@ -2,3 +2,5 @@ cmake-build-debug
 cmake-build-debug-mingw
 .DS_Store
 .idea/workspace.xml
+build
+.vscode

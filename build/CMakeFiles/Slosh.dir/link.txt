@@ -1,3 +1,0 @@
-C:\Qt\Tools\CMake_64\bin\cmake.exe -E rm -f CMakeFiles\Slosh.dir/objects.a
-C:\MinGW\mingw64\bin\ar.exe qc CMakeFiles\Slosh.dir/objects.a @CMakeFiles\Slosh.dir\objects1.rsp
-C:\MinGW\mingw64\bin\g++.exe -g -Wl,--whole-archive CMakeFiles\Slosh.dir/objects.a -Wl,--no-whole-archive -o Slosh.exe -Wl,--out-implib,libSlosh.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\Slosh.dir\linklibs.rsp
