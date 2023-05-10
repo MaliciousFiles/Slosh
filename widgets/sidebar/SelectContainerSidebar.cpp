@@ -11,12 +11,12 @@
 
 SelectContainerSidebar::SelectContainerSidebar(Canvas* canvas, QWidget *parent) : SidebarWidget(parent), canvas(canvas) {
     temperature = new NumberInput(this);
-    temperature->slider->setRange(0, 500);
+    temperature->slider->setRange(0, 3000);
     temperature->slider->setTickInterval(50);
     temperature->slider->setTickPosition(QSlider::TicksBelow);
 
     volume = new NumberInput(this);
-    volume->slider->setRange(50, 1500);
+    volume->slider->setRange(50, 13000);
     volume->slider->setTickInterval(145);
     volume->slider->setTickPosition(QSlider::TicksBelow);
 

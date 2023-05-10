@@ -233,6 +233,12 @@
 			null
 		],
 		[
+			"C:/Users/S10122978/Documents/Slosh/api/MaterialFormula.h",
+			"MU",
+			"JH45IGJHDZ/moc_MaterialFormula.cpp",
+			null
+		],
+		[
 			"C:/Users/S10122978/Documents/Slosh/api/Substance.h",
 			"MU",
 			"JH45IGJHDZ/moc_Substance.cpp",
@@ -403,6 +409,11 @@
 			null
 		],
 		[ "C:/Users/S10122978/Documents/Slosh/api/MaterialData.cpp", "MU", null ],
+		[
+			"C:/Users/S10122978/Documents/Slosh/api/MaterialFormula.cpp",
+			"MU",
+			null
+		],
 		[ "C:/Users/S10122978/Documents/Slosh/api/Substance.cpp", "MU", null ],
 		[ "C:/Users/S10122978/Documents/Slosh/main.cpp", "MU", null ],
 		[

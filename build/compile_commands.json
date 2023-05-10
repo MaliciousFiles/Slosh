@@ -101,6 +101,11 @@
 },
 {
   "directory": "C:/Users/S10122978/Documents/Slosh/build",
+  "command": "C:\\MinGW\\mingw64\\bin\\g++.exe -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64 @CMakeFiles/Slosh.dir/includes_CXX.rsp -g -std=gnu++1z -o CMakeFiles\\Slosh.dir\\api\\MaterialFormula.cpp.obj -c C:\\Users\\S10122978\\Documents\\Slosh\\api\\MaterialFormula.cpp",
+  "file": "C:/Users/S10122978/Documents/Slosh/api/MaterialFormula.cpp"
+},
+{
+  "directory": "C:/Users/S10122978/Documents/Slosh/build",
   "command": "C:\\MinGW\\mingw64\\bin\\g++.exe -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64 @CMakeFiles/Slosh.dir/includes_CXX.rsp -g -std=gnu++1z -o CMakeFiles\\Slosh.dir\\Slosh_autogen\\2SEMU33LXP\\qrc_icons.cpp.obj -c C:\\Users\\S10122978\\Documents\\Slosh\\build\\Slosh_autogen\\2SEMU33LXP\\qrc_icons.cpp",
   "file": "C:/Users/S10122978/Documents/Slosh/build/Slosh_autogen/2SEMU33LXP/qrc_icons.cpp"
 }

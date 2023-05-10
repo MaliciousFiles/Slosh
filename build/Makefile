@@ -237,6 +237,30 @@ api/MaterialData.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Slosh.dir\build.make CMakeFiles/Slosh.dir/api/MaterialData.cpp.s
 .PHONY : api/MaterialData.cpp.s
 
+api/MaterialFormula.obj: api/MaterialFormula.cpp.obj
+.PHONY : api/MaterialFormula.obj
+
+# target to build an object file
+api/MaterialFormula.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Slosh.dir\build.make CMakeFiles/Slosh.dir/api/MaterialFormula.cpp.obj
+.PHONY : api/MaterialFormula.cpp.obj
+
+api/MaterialFormula.i: api/MaterialFormula.cpp.i
+.PHONY : api/MaterialFormula.i
+
+# target to preprocess a source file
+api/MaterialFormula.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Slosh.dir\build.make CMakeFiles/Slosh.dir/api/MaterialFormula.cpp.i
+.PHONY : api/MaterialFormula.cpp.i
+
+api/MaterialFormula.s: api/MaterialFormula.cpp.s
+.PHONY : api/MaterialFormula.s
+
+# target to generate assembly for a file
+api/MaterialFormula.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Slosh.dir\build.make CMakeFiles/Slosh.dir/api/MaterialFormula.cpp.s
+.PHONY : api/MaterialFormula.cpp.s
+
 api/Substance.obj: api/Substance.cpp.obj
 .PHONY : api/Substance.obj
 
@@ -667,6 +691,9 @@ help:
 	@echo ... api/MaterialData.obj
 	@echo ... api/MaterialData.i
 	@echo ... api/MaterialData.s
+	@echo ... api/MaterialFormula.obj
+	@echo ... api/MaterialFormula.i
+	@echo ... api/MaterialFormula.s
 	@echo ... api/Substance.obj
 	@echo ... api/Substance.i
 	@echo ... api/Substance.s

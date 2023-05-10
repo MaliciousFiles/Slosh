@@ -10,6 +10,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/Slosh.dir/api/ChemicalEquation.cpp.obj.d"
   "CMakeFiles/Slosh.dir/api/MaterialData.cpp.obj"
   "CMakeFiles/Slosh.dir/api/MaterialData.cpp.obj.d"
+  "CMakeFiles/Slosh.dir/api/MaterialFormula.cpp.obj"
+  "CMakeFiles/Slosh.dir/api/MaterialFormula.cpp.obj.d"
   "CMakeFiles/Slosh.dir/api/Substance.cpp.obj"
   "CMakeFiles/Slosh.dir/api/Substance.cpp.obj.d"
   "CMakeFiles/Slosh.dir/main.cpp.obj"

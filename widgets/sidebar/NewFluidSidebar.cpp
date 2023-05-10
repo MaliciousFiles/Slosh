@@ -23,7 +23,7 @@ NewFluidSidebar::NewFluidSidebar(Canvas* canvas, QWidget *parent) : SidebarWidge
     volume->slider->setRange(1, 1000);
     volume->slider->setTickInterval(100);
     volume->slider->setTickPosition(QSlider::TicksBelow);
-    volume->slider->setValue(500);
+    volume->slider->setValue(3000);
 
     auto layout = new QFormLayout(this);
     layout->setContentsMargins(0, 30, 10, 0);

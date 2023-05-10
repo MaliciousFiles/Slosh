@@ -378,11 +378,26 @@ CMakeFiles/Slosh.dir/widgets/canvas/Container.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Slosh.dir/widgets/canvas/Container.cpp.s"
 	C:\MinGW\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\S10122978\Documents\Slosh\widgets\canvas\Container.cpp -o CMakeFiles\Slosh.dir\widgets\canvas\Container.cpp.s
 
+CMakeFiles/Slosh.dir/api/MaterialFormula.cpp.obj: CMakeFiles/Slosh.dir/flags.make
+CMakeFiles/Slosh.dir/api/MaterialFormula.cpp.obj: CMakeFiles/Slosh.dir/includes_CXX.rsp
+CMakeFiles/Slosh.dir/api/MaterialFormula.cpp.obj: C:/Users/S10122978/Documents/Slosh/api/MaterialFormula.cpp
+CMakeFiles/Slosh.dir/api/MaterialFormula.cpp.obj: CMakeFiles/Slosh.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\S10122978\Documents\Slosh\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Building CXX object CMakeFiles/Slosh.dir/api/MaterialFormula.cpp.obj"
+	C:\MinGW\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Slosh.dir/api/MaterialFormula.cpp.obj -MF CMakeFiles\Slosh.dir\api\MaterialFormula.cpp.obj.d -o CMakeFiles\Slosh.dir\api\MaterialFormula.cpp.obj -c C:\Users\S10122978\Documents\Slosh\api\MaterialFormula.cpp
+
+CMakeFiles/Slosh.dir/api/MaterialFormula.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Slosh.dir/api/MaterialFormula.cpp.i"
+	C:\MinGW\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\S10122978\Documents\Slosh\api\MaterialFormula.cpp > CMakeFiles\Slosh.dir\api\MaterialFormula.cpp.i
+
+CMakeFiles/Slosh.dir/api/MaterialFormula.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Slosh.dir/api/MaterialFormula.cpp.s"
+	C:\MinGW\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\S10122978\Documents\Slosh\api\MaterialFormula.cpp -o CMakeFiles\Slosh.dir\api\MaterialFormula.cpp.s
+
 CMakeFiles/Slosh.dir/Slosh_autogen/2SEMU33LXP/qrc_icons.cpp.obj: CMakeFiles/Slosh.dir/flags.make
 CMakeFiles/Slosh.dir/Slosh_autogen/2SEMU33LXP/qrc_icons.cpp.obj: CMakeFiles/Slosh.dir/includes_CXX.rsp
 CMakeFiles/Slosh.dir/Slosh_autogen/2SEMU33LXP/qrc_icons.cpp.obj: Slosh_autogen/2SEMU33LXP/qrc_icons.cpp
 CMakeFiles/Slosh.dir/Slosh_autogen/2SEMU33LXP/qrc_icons.cpp.obj: CMakeFiles/Slosh.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\S10122978\Documents\Slosh\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Building CXX object CMakeFiles/Slosh.dir/Slosh_autogen/2SEMU33LXP/qrc_icons.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\S10122978\Documents\Slosh\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_23) "Building CXX object CMakeFiles/Slosh.dir/Slosh_autogen/2SEMU33LXP/qrc_icons.cpp.obj"
 	C:\MinGW\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Slosh.dir/Slosh_autogen/2SEMU33LXP/qrc_icons.cpp.obj -MF CMakeFiles\Slosh.dir\Slosh_autogen\2SEMU33LXP\qrc_icons.cpp.obj.d -o CMakeFiles\Slosh.dir\Slosh_autogen\2SEMU33LXP\qrc_icons.cpp.obj -c C:\Users\S10122978\Documents\Slosh\build\Slosh_autogen\2SEMU33LXP\qrc_icons.cpp
 
 CMakeFiles/Slosh.dir/Slosh_autogen/2SEMU33LXP/qrc_icons.cpp.i: cmake_force
@@ -415,6 +430,7 @@ Slosh_OBJECTS = \
 "CMakeFiles/Slosh.dir/util/GlobalClickHandler.cpp.obj" \
 "CMakeFiles/Slosh.dir/api/ChemicalEquation.cpp.obj" \
 "CMakeFiles/Slosh.dir/widgets/canvas/Container.cpp.obj" \
+"CMakeFiles/Slosh.dir/api/MaterialFormula.cpp.obj" \
 "CMakeFiles/Slosh.dir/Slosh_autogen/2SEMU33LXP/qrc_icons.cpp.obj"
 
 # External object files for target Slosh
@@ -440,6 +456,7 @@ Slosh.exe: CMakeFiles/Slosh.dir/widgets/sidebar/SelectContainerSidebar.cpp.obj
 Slosh.exe: CMakeFiles/Slosh.dir/util/GlobalClickHandler.cpp.obj
 Slosh.exe: CMakeFiles/Slosh.dir/api/ChemicalEquation.cpp.obj
 Slosh.exe: CMakeFiles/Slosh.dir/widgets/canvas/Container.cpp.obj
+Slosh.exe: CMakeFiles/Slosh.dir/api/MaterialFormula.cpp.obj
 Slosh.exe: CMakeFiles/Slosh.dir/Slosh_autogen/2SEMU33LXP/qrc_icons.cpp.obj
 Slosh.exe: CMakeFiles/Slosh.dir/build.make
 Slosh.exe: C:/Qt/6.5.0/mingw_64/lib/libQt6Widgets.a
@@ -448,7 +465,7 @@ Slosh.exe: C:/Qt/6.5.0/mingw_64/lib/libQt6Core.a
 Slosh.exe: CMakeFiles/Slosh.dir/linklibs.rsp
 Slosh.exe: CMakeFiles/Slosh.dir/objects1.rsp
 Slosh.exe: CMakeFiles/Slosh.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=C:\Users\S10122978\Documents\Slosh\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_23) "Linking CXX executable Slosh.exe"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=C:\Users\S10122978\Documents\Slosh\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_24) "Linking CXX executable Slosh.exe"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles\Slosh.dir\link.txt --verbose=$(VERBOSE)
 	C:\Qt\6.5.0\mingw_64\bin\windeployqt --no-translations Slosh.exe
 

@@ -12,6 +12,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "C:/Users/S10122978/Documents/Slosh/build/Slosh_autogen/mocs_compilation.cpp" "CMakeFiles/Slosh.dir/Slosh_autogen/mocs_compilation.cpp.obj" "gcc" "CMakeFiles/Slosh.dir/Slosh_autogen/mocs_compilation.cpp.obj.d"
   "C:/Users/S10122978/Documents/Slosh/api/ChemicalEquation.cpp" "CMakeFiles/Slosh.dir/api/ChemicalEquation.cpp.obj" "gcc" "CMakeFiles/Slosh.dir/api/ChemicalEquation.cpp.obj.d"
   "C:/Users/S10122978/Documents/Slosh/api/MaterialData.cpp" "CMakeFiles/Slosh.dir/api/MaterialData.cpp.obj" "gcc" "CMakeFiles/Slosh.dir/api/MaterialData.cpp.obj.d"
+  "C:/Users/S10122978/Documents/Slosh/api/MaterialFormula.cpp" "CMakeFiles/Slosh.dir/api/MaterialFormula.cpp.obj" "gcc" "CMakeFiles/Slosh.dir/api/MaterialFormula.cpp.obj.d"
   "C:/Users/S10122978/Documents/Slosh/api/Substance.cpp" "CMakeFiles/Slosh.dir/api/Substance.cpp.obj" "gcc" "CMakeFiles/Slosh.dir/api/Substance.cpp.obj.d"
   "C:/Users/S10122978/Documents/Slosh/main.cpp" "CMakeFiles/Slosh.dir/main.cpp.obj" "gcc" "CMakeFiles/Slosh.dir/main.cpp.obj.d"
   "C:/Users/S10122978/Documents/Slosh/util/ChemistryHelper.cpp" "CMakeFiles/Slosh.dir/util/ChemistryHelper.cpp.obj" "gcc" "CMakeFiles/Slosh.dir/util/ChemistryHelper.cpp.obj.d"
