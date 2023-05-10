@@ -4,19 +4,26 @@
 #include <map>
 #include <string>
 #include <utility>
+#include "MaterialFormula.h"
 
 class MaterialData {
 public:
     static std::map<std::string, MaterialData*> FLUIDS;
     static void initFluids();
 
+    enum CompoundType {
+        POLAR_COVALENT,
+        NONPOLAR_COVALENT,
+        IONIC
+    };
+
     const std::string name;
-    const std::string formula;
-    const int molarmass;
-    const std::string compound;
+    const MaterialFormula formula;
+    const double molarMass;
+    const CompoundType compound;
 private:
     // TODO: make this take in various stats about the fluid (like name)
-    MaterialData(std::string  name, std::string formula, int molarmass, std::string compound) : name(std::move(name)), formula(std::move(formula)), molarmass(std::move(molarmass)), compound(std::move(compound)) {};
+    MaterialData(std::string  name, MaterialFormula formula, double molarMass, CompoundType compound) : name(std::move(name)), formula(std::move(formula)), molarMass(std::move(molarMass)), compound(std::move(compound)) {};
     void init();
 };
 

@@ -158,8 +158,3 @@ double ChemistryHelper::getGibbs(double temp, ChemicalEquation* equation) {
 
     return enthalpy - (temp * entropy);
 }
-
-ChemicalEquation *ChemistryHelper::getChemicalEquation(Substance **reactants, int numReactants) {
-    // TODO: figure out products and put it into a ChemicalEquation
-    return nullptr;
-}

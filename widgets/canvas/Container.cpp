@@ -87,13 +87,13 @@ void Container::paintEvent(QPaintEvent *event){
     painter.setBrush(QColor(240+modifier, 240+modifier, 240+modifier));
     painter.drawRect(width, WALL_WIDTH*2, 5, height-WALL_WIDTH*2);
 
-    double pixelsPerDegree = (height-WALL_WIDTH*2-2)/500;
+    double pixelsPerDegree = (height-WALL_WIDTH*2-2)/3000;
     painter.setPen(Qt::NoPen);
     painter.setBrush(QColor(255+modifier, 1+modifier, 0+modifier));
     painter.drawRect(width+1, height-pixelsPerDegree*temperature-1, 3, pixelsPerDegree*temperature);
 
     painter.setPen(QPen(QColor(60+modifier, 60+modifier, 60+modifier), 1));
-    for (int i = 0; i < 500; i+=10) {
+    for (int i = 0; i < 3000; i+=10) {
         painter.drawLine(width+3, height-pixelsPerDegree*i-1, width+5, height-pixelsPerDegree*i-1);
     }
 }
