@@ -4,6 +4,7 @@
 
 #include <QFormLayout>
 #include <QLabel>
+#include <QFrame>
 #include "../../api/MaterialData.h"
 #include "SelectContainerSidebar.h"
 #include "../../util/GlobalClickHandler.h"
@@ -16,16 +17,18 @@ SelectContainerSidebar::SelectContainerSidebar(Canvas* canvas, QWidget *parent) 
     temperature->slider->setTickPosition(QSlider::TicksBelow);
 
     volume = new NumberInput(this);
-    volume->slider->setRange(50, 1500);
+    volume->slider->setRange(500, 2000);
     volume->slider->setTickInterval(145);
     volume->slider->setTickPosition(QSlider::TicksBelow);
 
     lid = new QCheckBox(this);
 
     auto layout = new QFormLayout(this);
-    layout->setContentsMargins(0, 30, 10, 0);
+    layout->setContentsMargins(10, 30, 10, 0);
     layout->setVerticalSpacing(10);
-    layout->addWidget(new QLabel("Select a Container"));
+    auto* label = new QLabel("Select a Container");
+    label->setAlignment(Qt::AlignHCenter);
+    layout->addWidget(label);
     layout->addRow(tr("Vol (mL)"), volume);
     layout->addRow(tr("Temp (k)"), temperature);
     layout->addRow(tr("Lid"), lid);
@@ -69,7 +72,7 @@ void SelectContainerSidebar::setSelected(Container* container) {
 
     setLayoutVisible(container != nullptr);
 
-    for (auto* c : canvas->getContainers()) c->setCursor(selected ? Qt::OpenHandCursor : Qt::PointingHandCursor);
+    for (auto* c : canvas->getContainers()) c->setClickable(selected == nullptr, Qt::OpenHandCursor);
 
     if (container) {
         volume->slider->setValue(container->getVolume());
@@ -86,7 +89,7 @@ void SelectContainerSidebar::setLayoutVisible(bool visible) {
 }
 
 SelectContainerSidebar::~SelectContainerSidebar() {
-    for (auto* container : canvas->getContainers()) container->setCursor(Qt::OpenHandCursor);
+    for (auto* container : canvas->getContainers()) container->setClickable(false, Qt::OpenHandCursor);
 
 //    SidebarWidget::~SidebarWidget();
 }

@@ -11,7 +11,7 @@ Canvas::Canvas(QWidget *parent) : QWidget(parent) {
     setAutoFillBackground(true);
     setPalette(pal);
 
-    addContainer(250)->move(this->width()/2, this->height()/2);
+    addContainer(1000)->move(this->width()/2, this->height()/2);
 }
 
 Container* Canvas::addContainer(int volume){

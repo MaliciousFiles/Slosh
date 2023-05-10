@@ -14,27 +14,11 @@ const double Container::WH_RATIO = 0.75;
 const double Container::PIXELS_PER_CM = 30;
 const double Container::WALL_WIDTH = 10;
 
-Container::Container(int volume, QWidget *parent) : QWidget(parent), lidded(false), temperature(250) {
+Container::Container(int volume, QWidget *parent) : Clickable(parent), lidded(false), temperature(1000) {
     setMouseTracking(true);
     setVolume(volume);
 
     setCursor(Qt::OpenHandCursor);
-    setGraphicsEffect(new QGraphicsOpacityEffect(this));
-    ((QGraphicsOpacityEffect*) graphicsEffect())->setOpacity(1);
-
-    connect(GlobalClickHandler::instance, &GlobalClickHandler::objectClicked, this, [this](QObject* obj, Qt::MouseButton button, bool& consume){
-        if(button == Qt::LeftButton){
-            for(auto& substance : substances){
-                if (substance.second == obj) {
-                    substances.erase(substances.find(substance.first));
-                    delete substance.second;
-                    styleChildren();
-                    consume = true;
-                    break;
-                }
-            }
-        }
-    });
 }
 
 void Container::setVolume(double volume) {
@@ -109,17 +93,7 @@ void Container::setTemperature(double temp) {
 void Container::setCursor(Qt::CursorShape shape) {
     QWidget::setCursor(shape);
 
-    if (underMouse()) {
-        ((QGraphicsOpacityEffect*) graphicsEffect())->setOpacity(shape == Qt::PointingHandCursor ? 0.75 : 1.0);
-    }
-}
 
-void Container::enterEvent(QEnterEvent* event) {
-    ((QGraphicsOpacityEffect*) graphicsEffect())->setOpacity(cursor() == Qt::PointingHandCursor ? 0.75 : 1.0);
-}
-
-void Container::leaveEvent(QEvent* event) {
-    ((QGraphicsOpacityEffect*) graphicsEffect())->setOpacity(1.0);
 }
 
 void Container::paintEvent(QPaintEvent *event){
@@ -158,6 +132,17 @@ void Container::paintEvent(QPaintEvent *event){
     painter.setPen(QPen(QColor(60, 60, 60), 1));
     for (int i = 0; i < 3000; i+=60) {
         painter.drawLine(width+3, height-pixelsPerDegree*i-1, width+5, height-pixelsPerDegree*i-1);
+    }
+}
+
+void Container::removeSubstance(MaterialData* material) {
+    for (auto& s : substances) {
+        if (s.first->getMaterial() == material) {
+            substances.erase(substances.find(s.first));
+            delete s.second;
+            styleChildren();
+            return;
+        }
     }
 }
 

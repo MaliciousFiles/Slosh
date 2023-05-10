@@ -8,8 +8,9 @@
 #include <QWidget>
 #include <map>
 #include "../../api/Substance.h"
+#include "../../util/Clickable.h"
 
-class Container : public QWidget {
+class Container : public Clickable {
     Q_OBJECT;
 
     const static double WH_RATIO; // w/h
@@ -27,25 +28,26 @@ class Container : public QWidget {
     void mousePressEvent(QMouseEvent* event) override;
     void mouseMoveEvent(QMouseEvent* event) override;
     void mouseReleaseEvent(QMouseEvent* event) override;
-    void enterEvent(QEnterEvent* event) override;
-    void leaveEvent(QEvent* event) override;
-
-    void styleChildren();
 
 public:
 
+    void styleChildren();
+
     explicit Container(int volume, QWidget *parent = nullptr);
-    void insertSubstance(Substance* substance);
     void paintEvent(QPaintEvent *event) override;
-    void setVolume(double volume);
 
     inline double getVolume() const { return volume; }
-    void setLidded(bool hasLid);
+    void setVolume(double volume);
 
     inline bool hasLid() const { return lidded; }
-    void setTemperature(double temp);
+    void setLidded(bool hasLid);
 
     inline double getTemperature() const { return temperature; }
+    void setTemperature(double temp);
+
+    inline std::map<Substance*, QWidget*> getSubstances() const { return substances; }
+    void insertSubstance(Substance* substance);
+    void removeSubstance(MaterialData* material);
 
     void setCursor(Qt::CursorShape shape);
 };
