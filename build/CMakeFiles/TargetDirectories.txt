@@ -1,0 +1,4 @@
+C:/Users/S10122978/Documents/Slosh/build/CMakeFiles/Slosh.dir
+C:/Users/S10122978/Documents/Slosh/build/CMakeFiles/edit_cache.dir
+C:/Users/S10122978/Documents/Slosh/build/CMakeFiles/rebuild_cache.dir
+C:/Users/S10122978/Documents/Slosh/build/CMakeFiles/Slosh_autogen.dir

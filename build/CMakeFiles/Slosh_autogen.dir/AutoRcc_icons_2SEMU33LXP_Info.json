@@ -1,0 +1,25 @@
+{
+	"BUILD_DIR" : "C:/Users/S10122978/Documents/Slosh/build/Slosh_autogen",
+	"CMAKE_BINARY_DIR" : "C:/Users/S10122978/Documents/Slosh/build",
+	"CMAKE_CURRENT_BINARY_DIR" : "C:/Users/S10122978/Documents/Slosh/build",
+	"CMAKE_CURRENT_SOURCE_DIR" : "C:/Users/S10122978/Documents/Slosh",
+	"CMAKE_SOURCE_DIR" : "C:/Users/S10122978/Documents/Slosh",
+	"INCLUDE_DIR" : "C:/Users/S10122978/Documents/Slosh/build/Slosh_autogen/include",
+	"INPUTS" : 
+	[
+		"C:/Users/S10122978/Documents/Slosh/icons/remove_fluid.png",
+		"C:/Users/S10122978/Documents/Slosh/icons/edit_fluid.png",
+		"C:/Users/S10122978/Documents/Slosh/icons/edit_container.png",
+		"C:/Users/S10122978/Documents/Slosh/icons/add_fluid.png"
+	],
+	"LOCK_FILE" : "C:/Users/S10122978/Documents/Slosh/build/CMakeFiles/Slosh_autogen.dir/AutoRcc_icons_2SEMU33LXP_Lock.lock",
+	"MULTI_CONFIG" : false,
+	"OPTIONS" : [ "-name", "icons" ],
+	"OUTPUT_CHECKSUM" : "2SEMU33LXP",
+	"OUTPUT_NAME" : "qrc_icons.cpp",
+	"RCC_EXECUTABLE" : "C:/Qt/6.5.0/mingw_64/./bin/rcc.exe",
+	"RCC_LIST_OPTIONS" : [ "--list" ],
+	"SETTINGS_FILE" : "C:/Users/S10122978/Documents/Slosh/build/CMakeFiles/Slosh_autogen.dir/AutoRcc_icons_2SEMU33LXP_Used.txt",
+	"SOURCE" : "C:/Users/S10122978/Documents/Slosh/icons/icons.qrc",
+	"VERBOSITY" : 0
+}

@@ -37,7 +37,7 @@ class Container : public QWidget {
 
 public:
     explicit Container(int volume, QWidget *parent = nullptr);
-    void insertSubstance(Substance* substance, int index);
+    void insertSubstance(Substance* substance);
     bool removeSubstance(int index);
     Substance* getSubstance(int index);
     void paintEvent(QPaintEvent *event) override;

@@ -8,12 +8,14 @@
 #include <QComboBox>
 #include "SidebarWidget.h"
 #include "../util/NumberInput.h"
+#include "../canvas/Canvas.h"
 
 class NewFluidSidebar : public SidebarWidget {
     Q_OBJECT
 
 public:
-    explicit NewFluidSidebar(QWidget *parent = nullptr);
+    explicit NewFluidSidebar(Canvas* canvas, QWidget *parent = nullptr);
+
 
 private:
     QComboBox *pickFluid;

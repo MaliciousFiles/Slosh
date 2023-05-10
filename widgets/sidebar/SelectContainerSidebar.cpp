@@ -61,6 +61,7 @@ SelectContainerSidebar::SelectContainerSidebar(Canvas* canvas, QWidget *parent) 
             lastClicked = obj;
         }
     });
+    
 }
 
 void SelectContainerSidebar::setSelected(Container* container) {

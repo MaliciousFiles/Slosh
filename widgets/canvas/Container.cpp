@@ -28,7 +28,10 @@ void Container::setVolume(double volume) {
     resize(width+WALL_WIDTH*2, height+WALL_WIDTH*2);
 }
 
-void Container::insertSubstance(Substance* substance, int index){
+void Container::insertSubstance(Substance* substance){
+    substances.push_back(substance);
+    // TODO: add new substance to substance vector
+
     ChemicalEquation* equation = ChemistryHelper::getChemicalEquation(substances.data(), substances.size());
 
     if (ChemistryHelper::getGibbs(temperature, equation) < 0) {
