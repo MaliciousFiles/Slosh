@@ -163,60 +163,60 @@ void ChemistryHelper::balanceEquation(ChemicalEquation* equation) {
     std::map<std::string, int> reactantAmts;
     std::map<std::string, int> productAmts;
 
-    for (std::map<MaterialData*, int>::iterator it = equation->reactants.begin(); it != equation->reactants.end(); it++) {
-        for (std::map<std::string, int>::iterator i = it->first->formula.elements.begin(); i != it->first->formula.elements.end(); i++) {
-            reactantAmts[i->first] += i->second * it->second;
+    for (auto& reactant : equation->reactants) {
+        for (auto i = reactant.first->formula.elements.begin(); i != reactant.first->formula.elements.end(); i++) {
+            reactantAmts[i->first] += i->second * reactant.second;
         }
     }
-    for (std::map<MaterialData*, int>::iterator it = equation->products.begin(); it != equation->products.end(); it++) {
-        for (std::map<std::string, int>::iterator i = it->first->formula.elements.begin(); i != it->first->formula.elements.end(); i++) {
-            productAmts[i->first] += i->second * it->second;
+    for (auto& product : equation->products) {
+        for (auto i = product.first->formula.elements.begin(); i != product.first->formula.elements.end(); i++) {
+            productAmts[i->first] += i->second * product.second;
         }
     }
-    for (std::map<MaterialData*, int>::iterator it = equation->reactants.begin(); it != equation->reactants.end(); it++) {
-        for (std::map<std::string, int>::iterator i = it->first->formula.elements.begin(); i != it->first->formula.elements.end(); i++) {
-            if (reactantAmts[i->first] != productsAmts[i->first]){
-                if(reactantAmts[i->first] > productsAmts[i->first]){
-                    for (std::map<MaterialData*, int>::iterator it = equation->products.begin(); it != equation->products.end(); it++) {
-                        if (it->first->formula.elements.count(i->first) > 0) {
-                            if(((equation->products[it->first])%2)!=0){
-                                equation->products[it->first]++;
+    for (auto it = equation->reactants.begin(); it != equation->reactants.end(); it++) {
+        for (auto i = it->first->formula.elements.begin(); i != it->first->formula.elements.end(); i++) {
+            if (reactantAmts[i->first] != productAmts[i->first]){
+                if(reactantAmts[i->first] > productAmts[i->first]){
+                    for (auto it2 = equation->products.begin(); it2 != equation->products.end(); it2++) {
+                        if (it2->first->formula.elements.count(i->first) > 0) {
+                            if(((equation->products[it2->first]) % 2) != 0){
+                                equation->products[it2->first]++;
                             }
                             else{
-                                equation->products[it->first]*=2;
+                                equation->products[it2->first]*=2;
                             }
                         }
                     }
                 }
-                else if(reactantAmts[i->first] < productsAmts[i->first]){
-                    for (std::map<MaterialData*, int>::iterator it = equation->reactants.begin(); it != equation->reactants.end(); it++) {
-                        if (it->first->formula.elements.count(i->first) > 0) {
-                            if(((equation->reactants[it->first])%2)!=0){
-                                equation->reactants[it->first]++;
+                else if(reactantAmts[i->first] < productAmts[i->first]){
+                    for (auto it2 = equation->reactants.begin(); it2 != equation->reactants.end(); it2++) {
+                        if (it2->first->formula.elements.count(i->first) > 0) {
+                            if(((equation->reactants[it2->first]) % 2) != 0){
+                                equation->reactants[it2->first]++;
                             }
                             else{
-                                equation->reactants[it->first]*=2;
+                                equation->reactants[it2->first]*=2;
                             }
                         }
                     }
                 }
                 bool divisible=true;
-                for (std::map<MaterialData*, int>::iterator it = equation->reactants.begin(); it != equation->reactants.end(); it++) {
-                    if (it->second%2!=0){
+                for (auto& reactant : equation->reactants) {
+                    if (reactant.second%2!=0){
                         divisible = false;
                     }
                 }
-                for (std::map<MaterialData*, int>::iterator it = equation->products.begin(); it != equation->products.end(); it++) {
-                    if (it->second%2!=0){
+                for (auto& product : equation->products) {
+                    if (product.second%2!=0){
                         divisible = false;
                     }
                 }
                 if(divisible){
-                    for (std::map<MaterialData*, int>::iterator it = equation->reactants.begin(); it != equation->reactants.end(); it++) {
-                        it->second/=2;
+                    for (auto& reactant : equation->reactants) {
+                        reactant.second/=2;
                     }
-                    for (std::map<MaterialData*, int>::iterator it = equation->products.begin(); it != equation->products.end(); it++) {
-                        it->second/=2;
+                    for (auto& product : equation->products) {
+                        product.second/=2;
                     }
                 }
                 balanceEquation(equation);

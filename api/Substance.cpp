@@ -24,10 +24,10 @@ void Substance::setMaterial(MaterialData* mat) {
     material = mat;
 }
 
-std::string Substance::getState() const {
+Substance::State Substance::getState() const {
     return state;
 }
 
-void Substance::setState(std::string sta) {
-    state = sta;
+void Substance::setState(State state) {
+    this->state = state;
 }

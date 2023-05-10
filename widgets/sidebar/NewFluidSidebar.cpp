@@ -10,7 +10,7 @@
 #include "../canvas/Container.h"
 #include "../../api/MaterialData.h"
 
-NewFluidSidebar::NewFluidSidebar(Canvas* canvas, QWidget *parent) : SidebarWidget(parent) {
+NewFluidSidebar::NewFluidSidebar(Canvas* canvas, QWidget *parent) : SidebarWidget(parent), canvas(canvas) {
     pickFluid = new QComboBox(this);
     QPalette pickPal;
     pickPal.setColor(QPalette::Window, Qt::transparent);
@@ -23,7 +23,7 @@ NewFluidSidebar::NewFluidSidebar(Canvas* canvas, QWidget *parent) : SidebarWidge
     volume->slider->setRange(1, 1000);
     volume->slider->setTickInterval(100);
     volume->slider->setTickPosition(QSlider::TicksBelow);
-    volume->slider->setValue(3000);
+    volume->slider->setValue(500);
 
     auto layout = new QFormLayout(this);
     layout->setContentsMargins(0, 30, 10, 0);
@@ -32,14 +32,24 @@ NewFluidSidebar::NewFluidSidebar(Canvas* canvas, QWidget *parent) : SidebarWidge
     layout->addRow(tr("Vol (mL)"), volume);
     setLayout(layout);
 
+    for (auto* c : canvas->getContainers()) c->setCursor(Qt::PointingHandCursor);
+
     connect(GlobalClickHandler::instance, &GlobalClickHandler::objectClicked, this, [this, canvas](QObject* obj, Qt::MouseButton button, bool& consume){
         if(button == Qt::LeftButton){
             for(auto container : canvas -> getContainers()){
                 if(container == obj){
-                    container -> insertSubstance(new Substance(MaterialData::FLUIDS[pickFluid -> currentText().toStdString()], volume -> slider -> value()));
+                    // TODO: use correct state
+                    container -> insertSubstance(new Substance(MaterialData::FLUIDS[pickFluid -> currentText().toStdString()], volume->slider->value(), Substance::State::AQUEOUS));
+                    consume = true;
                 }
             }
         }
     });
+}
+
+NewFluidSidebar::~NewFluidSidebar() {
+    for (auto* container : canvas->getContainers()) container->setCursor(Qt::OpenHandCursor);
+
+//    SidebarWidget::~SidebarWidget();
 }
 

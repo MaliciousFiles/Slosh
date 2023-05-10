@@ -6,15 +6,8 @@
 #define SLOSH_CONTAINER_H
 
 #include <QWidget>
+#include <map>
 #include "../../api/Substance.h"
-
-/*
- * To-do list:
- * 1. make a visual representation of a container that is 3 rectangles arranged to make a U shape as well as graduations
- * 2. Add ability for container to store what liquids it has inside.
- * 3. Represent liquids as colored rectangles stacked on top of each other.
- * 4.
- */
 
 class Container : public QWidget {
     Q_OBJECT;
@@ -23,7 +16,7 @@ class Container : public QWidget {
     const static double PIXELS_PER_CM; // px/cm
     const static double WALL_WIDTH; // px
 
-    std::vector<Substance*> substances;
+    std::map<Substance*, QWidget*> substances;
     double volume; // in mL (aka cm^3)
     double width; // in pixels
     double height; // in pixels
@@ -34,22 +27,27 @@ class Container : public QWidget {
     void mousePressEvent(QMouseEvent* event) override;
     void mouseMoveEvent(QMouseEvent* event) override;
     void mouseReleaseEvent(QMouseEvent* event) override;
+    void enterEvent(QEnterEvent* event) override;
+    void leaveEvent(QEvent* event) override;
+
+    void styleChildren();
 
 public:
+
     explicit Container(int volume, QWidget *parent = nullptr);
     void insertSubstance(Substance* substance);
-    bool removeSubstance(int index);
-    Substance* getSubstance(int index);
     void paintEvent(QPaintEvent *event) override;
-
     void setVolume(double volume);
+
     inline double getVolume() const { return volume; }
-
     void setLidded(bool hasLid);
-    inline bool hasLid() const { return lidded; }
 
+    inline bool hasLid() const { return lidded; }
     void setTemperature(double temp);
+
     inline double getTemperature() const { return temperature; }
+
+    void setCursor(Qt::CursorShape shape);
 };
 
 

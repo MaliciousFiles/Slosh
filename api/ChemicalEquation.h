@@ -14,8 +14,8 @@ typedef std::map<MaterialData*, int> Side;
 class ChemicalEquation {
 
 public:
-    const Side reactants;
-    const Side products;
+    Side reactants;
+    Side products;
 
     ChemicalEquation(Side reactants, Side products);
 };

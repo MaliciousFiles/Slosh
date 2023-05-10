@@ -4,8 +4,11 @@
 
 #include "Container.h"
 #include "../../api/ChemicalEquation.h"
-#include "../../util/ChemistryHelper.h"
+#include "../../util/GlobalClickHandler.h"
+//#include "../../util/ChemistryHelper.h"
 #include <QtGui>
+#include <QLayout>
+#include <QGraphicsOpacityEffect>
 
 const double Container::WH_RATIO = 0.75;
 const double Container::PIXELS_PER_CM = 30;
@@ -16,6 +19,22 @@ Container::Container(int volume, QWidget *parent) : QWidget(parent), lidded(fals
     setVolume(volume);
 
     setCursor(Qt::OpenHandCursor);
+    setGraphicsEffect(new QGraphicsOpacityEffect(this));
+    ((QGraphicsOpacityEffect*) graphicsEffect())->setOpacity(1);
+
+    connect(GlobalClickHandler::instance, &GlobalClickHandler::objectClicked, this, [this](QObject* obj, Qt::MouseButton button, bool& consume){
+        if(button == Qt::LeftButton){
+            for(auto& substance : substances){
+                if (substance.second == obj) {
+                    substances.erase(substances.find(substance.first));
+                    delete substance.second;
+                    styleChildren();
+                    consume = true;
+                    break;
+                }
+            }
+        }
+    });
 }
 
 void Container::setVolume(double volume) {
@@ -26,26 +45,53 @@ void Container::setVolume(double volume) {
     width *= PIXELS_PER_CM;
 
     resize(width+WALL_WIDTH*2, height+WALL_WIDTH*2);
+
+    styleChildren();
+}
+
+void Container::styleChildren() {
+    int i = 0;
+    for (auto& s : substances) {
+        int h = std::min(PIXELS_PER_CM * s.first->getVolume()/pow(width / PIXELS_PER_CM, 2), height);
+
+        s.second->setGeometry(WALL_WIDTH, WALL_WIDTH + height - i - h, width, h);
+
+        i += h;
+    }
 }
 
 void Container::insertSubstance(Substance* substance){
-    substances.push_back(substance);
-    // TODO: add new substance to substance vector
+    bool found = false;
+    for (auto& s : substances) {
+        if (s.first->getMaterial() == substance->getMaterial()) {
+            s.first->setVolume(s.first->getVolume() + substance->getVolume());
+            found = true;
+            break;
+        }
+    }
+    if (!found) {
+        auto* widget = new QWidget(this);
+        widget->show();
 
+        QPalette pal;
+        QColor color = substance->getMaterial()->color;
+        color.setAlpha(255*0.25);
+        pal.setColor(QPalette::Window, color);
+        widget->setAutoFillBackground(true);
+        widget->setPalette(pal);
+
+        substances[substance] = widget;
+    }
+
+    styleChildren();
+
+    /*
     ChemicalEquation* equation = ChemistryHelper::getChemicalEquation(substances.data(), substances.size());
 
     if (ChemistryHelper::getGibbs(temperature, equation) < 0) {
         // TODO: enact reaction
         qDebug() << "Reaction occurred";
-    }
-}
-
-bool Container::removeSubstance(int index){
-    return substances.erase(std::next(substances.begin(), index)) != substances.end();
-}
-
-Substance* Container::getSubstance(int index){
-    return substances.at(index);
+    }*/
 }
 
 void Container::setLidded(bool hasLid) {
@@ -60,12 +106,26 @@ void Container::setTemperature(double temp) {
     repaint();
 }
 
+void Container::setCursor(Qt::CursorShape shape) {
+    QWidget::setCursor(shape);
+
+    if (underMouse()) {
+        ((QGraphicsOpacityEffect*) graphicsEffect())->setOpacity(shape == Qt::PointingHandCursor ? 0.75 : 1.0);
+    }
+}
+
+void Container::enterEvent(QEnterEvent* event) {
+    ((QGraphicsOpacityEffect*) graphicsEffect())->setOpacity(cursor() == Qt::PointingHandCursor ? 0.75 : 1.0);
+}
+
+void Container::leaveEvent(QEvent* event) {
+    ((QGraphicsOpacityEffect*) graphicsEffect())->setOpacity(1.0);
+}
+
 void Container::paintEvent(QPaintEvent *event){
     QPainter painter(this);
 
-    int modifier = underMouse() && cursor() == Qt::PointingHandCursor ? 20 : 0;
-
-    QPen pen(QColor(160+modifier, 160+modifier, 164+modifier), WALL_WIDTH, Qt::SolidLine);
+    QPen pen(QColor(160, 160, 164), WALL_WIDTH, Qt::SolidLine);
     painter.setPen(pen);
 
     // walls
@@ -82,21 +142,21 @@ void Container::paintEvent(QPaintEvent *event){
 
     // background
     painter.setPen(Qt::NoPen);
-    painter.setBrush(QColor(210+modifier, 210+modifier, 210+modifier));
+    painter.setBrush(QColor(210, 210, 210));
     painter.drawRect(WALL_WIDTH, WALL_WIDTH, width, height);
 
     // thermometer
-    painter.setPen(QPen(QColor(60+modifier, 60+modifier, 60+modifier), 2));
-    painter.setBrush(QColor(240+modifier, 240+modifier, 240+modifier));
+    painter.setPen(QPen(QColor(60, 60, 60), 2));
+    painter.setBrush(QColor(240, 240, 240));
     painter.drawRect(width, WALL_WIDTH*2, 5, height-WALL_WIDTH*2);
 
     double pixelsPerDegree = (height-WALL_WIDTH*2-2)/3000;
     painter.setPen(Qt::NoPen);
-    painter.setBrush(QColor(255+modifier, 1+modifier, 0+modifier));
+    painter.setBrush(QColor(255, 1, 0));
     painter.drawRect(width+1, height-pixelsPerDegree*temperature-1, 3, pixelsPerDegree*temperature);
 
-    painter.setPen(QPen(QColor(60+modifier, 60+modifier, 60+modifier), 1));
-    for (int i = 0; i < 3000; i+=10) {
+    painter.setPen(QPen(QColor(60, 60, 60), 1));
+    for (int i = 0; i < 3000; i+=60) {
         painter.drawLine(width+3, height-pixelsPerDegree*i-1, width+5, height-pixelsPerDegree*i-1);
     }
 }

@@ -8,7 +8,7 @@
 #include "../sidebar/SelectContainerSidebar.h"
 
 std::vector<ToolbarActions*> ToolbarActions::ALL = std::vector<ToolbarActions*>();
-const ToolbarActions* ToolbarActions::ADD_FLUID = new ToolbarActions("Add Fluid", Qt::Key_A, [] (Window* w){return new NewFluidSidebar(w->getSidebar());});
+const ToolbarActions* ToolbarActions::ADD_FLUID = new ToolbarActions("Add Fluid", Qt::Key_A, [] (Window* w){return new NewFluidSidebar(w->getCanvas(), w->getSidebar());});
 const ToolbarActions* ToolbarActions::REMOVE_FLUID = new ToolbarActions("Remove Fluid", Qt::Key_R);
 const ToolbarActions* ToolbarActions::EDIT_FLUID = new ToolbarActions("Edit Fluid", Qt::Key_E);
 const ToolbarActions* ToolbarActions::EDIT_CONTAINER = new ToolbarActions("Edit Container", Qt::Key_C, [] (Window* w){return new SelectContainerSidebar(w->getCanvas(), w->getSidebar());});

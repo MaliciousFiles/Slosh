@@ -13,7 +13,14 @@
 class Substance {
 
 public:
-    explicit Substance(MaterialData* material, int volume, std::string state) : material(material), volume(volume), state(state) {}
+    enum State {
+        SOLID,
+        LIQUID,
+        GAS,
+        AQUEOUS
+    };
+
+    explicit Substance(MaterialData* material, int volume, State state) : material(material), volume(volume), state(state) {}
 
     bool operator==(const Substance& other) const;
 
@@ -21,12 +28,12 @@ public:
     void setVolume(int v);
     MaterialData* getMaterial() const;
     void setMaterial(MaterialData* mat);
-    std::string getState() const;
-    void setState(std::string sta);
+    State getState() const;
+    void setState(State state);
 
 private:
     int volume;
-    std::string state;
+    State state;
     MaterialData* material;
 };
 

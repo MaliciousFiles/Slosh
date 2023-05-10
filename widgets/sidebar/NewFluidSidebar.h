@@ -15,9 +15,10 @@ class NewFluidSidebar : public SidebarWidget {
 
 public:
     explicit NewFluidSidebar(Canvas* canvas, QWidget *parent = nullptr);
-
+    ~NewFluidSidebar() override;
 
 private:
+    Canvas* canvas;
     QComboBox *pickFluid;
     NumberInput *volume;
 };
