@@ -4,9 +4,11 @@ std::map<std::string, MaterialData*> MaterialData::FLUIDS = {};
 
 void MaterialData::initFluids() {
     // TODO: read from a file or something
-    (new MaterialData("Water", 1, 33.006, -285.83, 69.95))->init();
-//    (new MaterialData("Oil", 0, 0))->init();
-    (new MaterialData("Phosphoric Acid", 1.88, 97.994, -1271.66, 150.77))->init();
+    (new MaterialData("Water", "H2O", 18.015, "polar covalent"))->init();
+    (new MaterialData("Sodium Chloride", "NaCl", 58.440, "ionic"))->init();
+    (new MaterialData("Calcium Fluoride", "CaF2", 78.074, "ionic"))->init();
+    (new MaterialData("Oxygen", "O2", 31.998, "nonpolar covalent"))->init();
+    (new MaterialData("Carbon Dioxide", "CO2", 44.009, "nonpolar covalent"))->init();
 }
 
 void MaterialData::init() {

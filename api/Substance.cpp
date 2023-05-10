@@ -23,3 +23,11 @@ MaterialData* Substance::getMaterial() const {
 void Substance::setMaterial(MaterialData* mat) {
     material = mat;
 }
+
+std::string Substance::getState() const {
+    return state;
+}
+
+void Substance::setState(std::string sta) {
+    state = sta;
+}
