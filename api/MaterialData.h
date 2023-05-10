@@ -21,9 +21,11 @@ public:
     const MaterialFormula formula;
     const double molarMass;
     const CompoundType compound;
+    const double enthalpyFormation;
+    const double entropy;
 private:
     // TODO: make this take in various stats about the fluid (like name)
-    MaterialData(std::string  name, MaterialFormula formula, double molarMass, CompoundType compound) : name(std::move(name)), formula(std::move(formula)), molarMass(std::move(molarMass)), compound(std::move(compound)) {};
+    MaterialData(std::string  name, MaterialFormula formula, double molarMass, CompoundType compound, double enthalpyFormation, double entropy) : name(std::move(name)), formula(std::move(formula)), molarMass(std::move(molarMass)), compound(std::move(compound)), enthalpyFormation(enthalpyFormation), entropy(entropy) {};
     void init();
 };
 
