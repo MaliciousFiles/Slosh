@@ -21,7 +21,7 @@ public:
     static std::string doubleReaction(std::string one, std::string two, std::string three, std::string four);
 
     static ChemicalEquation *products(Substance *reactant1, Substance* reactant2);
-    static ChemicalEquation *balancing(Substance *reactant1, Substance *reactant2, Substance *product1, Substance *product2);
+    static void balanceEquation(ChemicalEquation* equation);
 }
 
 #endif //SLOSH_CHEMISTRYHELPER_H
