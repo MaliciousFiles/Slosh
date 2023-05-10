@@ -30,7 +30,7 @@ class Container : public QWidget {
     double temperature; // in K
     bool lidded;
 
-    QPointF dragStartPos;
+    QPointF* dragStartPos;
     void mousePressEvent(QMouseEvent* event) override;
     void mouseMoveEvent(QMouseEvent* event) override;
     void mouseReleaseEvent(QMouseEvent* event) override;

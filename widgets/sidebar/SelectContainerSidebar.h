@@ -17,11 +17,13 @@ class SelectContainerSidebar : public SidebarWidget {
 
 public:
     explicit SelectContainerSidebar(Canvas* canvas, QWidget *parent = nullptr);
+    ~SelectContainerSidebar() override;
 
 private:
     void setSelected(Container* container);
     void setLayoutVisible(bool visible);
 
+    Canvas* canvas;
     Container* selected;
     QObject* lastClicked;
     NumberInput *temperature;

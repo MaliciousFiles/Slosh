@@ -14,6 +14,8 @@ const double Container::WALL_WIDTH = 10;
 Container::Container(int volume, QWidget *parent) : QWidget(parent), lidded(false), temperature(250) {
     setMouseTracking(true);
     setVolume(volume);
+
+    setCursor(Qt::OpenHandCursor);
 }
 
 void Container::setVolume(double volume) {
@@ -58,7 +60,9 @@ void Container::setTemperature(double temp) {
 void Container::paintEvent(QPaintEvent *event){
     QPainter painter(this);
 
-    QPen pen(Qt::gray, WALL_WIDTH, Qt::SolidLine);
+    int modifier = underMouse() && cursor() == Qt::PointingHandCursor ? 20 : 0;
+
+    QPen pen(QColor(160+modifier, 160+modifier, 164+modifier), WALL_WIDTH, Qt::SolidLine);
     painter.setPen(pen);
 
     // walls
@@ -75,20 +79,20 @@ void Container::paintEvent(QPaintEvent *event){
 
     // background
     painter.setPen(Qt::NoPen);
-    painter.setBrush(QColor(210, 210, 210));
+    painter.setBrush(QColor(210+modifier, 210+modifier, 210+modifier));
     painter.drawRect(WALL_WIDTH, WALL_WIDTH, width, height);
 
     // thermometer
-    painter.setPen(QPen(QColor(60, 60, 60), 2));
-    painter.setBrush(QColor(240, 240, 240));
+    painter.setPen(QPen(QColor(60+modifier, 60+modifier, 60+modifier), 2));
+    painter.setBrush(QColor(240+modifier, 240+modifier, 240+modifier));
     painter.drawRect(width, WALL_WIDTH*2, 5, height-WALL_WIDTH*2);
 
     double pixelsPerDegree = (height-WALL_WIDTH*2-2)/500;
     painter.setPen(Qt::NoPen);
-    painter.setBrush(Qt::red);
+    painter.setBrush(QColor(255+modifier, 1+modifier, 0+modifier));
     painter.drawRect(width+1, height-pixelsPerDegree*temperature-1, 3, pixelsPerDegree*temperature);
 
-    painter.setPen(QPen(QColor(60, 60, 60), 1));
+    painter.setPen(QPen(QColor(60+modifier, 60+modifier, 60+modifier), 1));
     for (int i = 0; i < 500; i+=10) {
         painter.drawLine(width+3, height-pixelsPerDegree*i-1, width+5, height-pixelsPerDegree*i-1);
     }
@@ -96,25 +100,25 @@ void Container::paintEvent(QPaintEvent *event){
 
 void Container::mousePressEvent(QMouseEvent* event) {
     if (event->button() == Qt::LeftButton && cursor() == Qt::OpenHandCursor) {
-        dragStartPos = pos();
+        dragStartPos = new QPointF(pos());
 
         setCursor(Qt::ClosedHandCursor);
+    } else {
+        event->setAccepted(false);
     }
-    event->setAccepted(false);
 }
 
 void Container::mouseMoveEvent(QMouseEvent* event) {
     if (!lidded && event->position().y() < WALL_WIDTH) {
-        setCursor(Qt::ArrowCursor);
+//        setCursor(Qt::ArrowCursor); // TODO: causes problems that I don't really care to fix rn
         return;
     }
-
-    setCursor(event->buttons() & Qt::LeftButton ? Qt::ClosedHandCursor : Qt::OpenHandCursor);
+    if (!dragStartPos) return;
 
     if (event->buttons() & Qt::LeftButton) {
         QEventPoint point = event->point(0);
 
-        QPoint newPos = (dragStartPos + point.globalPosition() - point.globalPressPosition()).toPoint();
+        QPoint newPos = (*dragStartPos + point.globalPosition() - point.globalPressPosition()).toPoint();
 
         newPos.setX(std::clamp(newPos.x(), 0, parentWidget()->width() - rect().width()));
         newPos.setY(std::clamp(newPos.y(), 0, parentWidget()->height() - rect().height()));
@@ -125,7 +129,8 @@ void Container::mouseMoveEvent(QMouseEvent* event) {
 
 void Container::mouseReleaseEvent(QMouseEvent* event) {
     if (event->button() == Qt::LeftButton && cursor() == Qt::ClosedHandCursor) {
-        dragStartPos = QPointF();
+        delete dragStartPos;
+        dragStartPos = nullptr;
 
         setCursor(Qt::OpenHandCursor);
     }

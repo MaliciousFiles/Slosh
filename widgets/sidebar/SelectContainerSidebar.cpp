@@ -9,7 +9,7 @@
 #include "../../util/GlobalClickHandler.h"
 
 
-SelectContainerSidebar::SelectContainerSidebar(Canvas* canvas, QWidget *parent) : SidebarWidget(parent) {
+SelectContainerSidebar::SelectContainerSidebar(Canvas* canvas, QWidget *parent) : SidebarWidget(parent), canvas(canvas) {
     temperature = new NumberInput(this);
     temperature->slider->setRange(0, 500);
     temperature->slider->setTickInterval(50);
@@ -31,7 +31,7 @@ SelectContainerSidebar::SelectContainerSidebar(Canvas* canvas, QWidget *parent) 
     layout->addRow(tr("Lid"), lid);
     setLayout(layout);
 
-    setLayoutVisible(false);
+    setSelected(nullptr);
 
     connect(volume->slider, &QSlider::valueChanged, this, [this] (int value) {
         if (selected) selected->setVolume(value);
@@ -68,6 +68,8 @@ void SelectContainerSidebar::setSelected(Container* container) {
 
     setLayoutVisible(container != nullptr);
 
+    for (auto* c : canvas->getContainers()) c->setCursor(selected ? Qt::OpenHandCursor : Qt::PointingHandCursor);
+
     if (container) {
         volume->slider->setValue(container->getVolume());
         temperature->slider->setValue(container->getTemperature());
@@ -80,4 +82,10 @@ void SelectContainerSidebar::setLayoutVisible(bool visible) {
 
     form->setRowVisible(0, !visible);
     for (int i = 1; i < form->rowCount(); i++) form->setRowVisible(i, visible);
+}
+
+SelectContainerSidebar::~SelectContainerSidebar() {
+    for (auto* container : canvas->getContainers()) container->setCursor(Qt::OpenHandCursor);
+
+//    SidebarWidget::~SidebarWidget();
 }
