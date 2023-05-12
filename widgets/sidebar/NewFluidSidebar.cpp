@@ -34,10 +34,10 @@ NewFluidSidebar::NewFluidSidebar(Canvas* canvas, QWidget *parent) : SidebarWidge
 
     for (auto* c : canvas->getContainers()) c->setClickable(true);
 
-    connect(GlobalClickHandler::instance, &GlobalClickHandler::objectClicked, this, [this, canvas](QObject* obj, Qt::MouseButton button, bool& consume){
-        if(button == Qt::LeftButton){
-            for(auto container : canvas -> getContainers()){
-                if(container == obj){
+    connect(GlobalClickHandler::instance, &GlobalClickHandler::objectClicked, this, [this, canvas](QObject* obj, Qt::MouseButton button, bool& consume) {
+        if (button == Qt::LeftButton) {
+            for (auto container : canvas -> getContainers()) {
+                if (container == obj) {
                     // TODO: use correct state
                     container -> insertSubstance(new Substance(MaterialData::FLUIDS[pickFluid -> currentText().toStdString()], volume->slider->value(), Substance::State::AQUEOUS));
                     consume = true;

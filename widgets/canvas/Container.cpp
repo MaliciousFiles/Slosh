@@ -39,6 +39,7 @@ void Container::styleChildren() {
         int h = std::min(PIXELS_PER_CM * s.first->getVolume()/pow(width / PIXELS_PER_CM, 2), height);
 
         s.second->setGeometry(WALL_WIDTH, WALL_WIDTH + height - i - h, width, h);
+        s.second->setToolTip(s.first->getMaterial()->formula.toString()+" ("+QString::number(s.first->getVolume())+" mL)");
 
         i += h;
     }
@@ -56,6 +57,7 @@ void Container::insertSubstance(Substance* substance){
     if (!found) {
         auto* widget = new QWidget(this);
         widget->show();
+        widget->setToolTip(substance->getMaterial()->formula.toString()+" ("+QString::number(substance->getVolume())+" mL)");
 
         QPalette pal;
         QColor color = substance->getMaterial()->color;
