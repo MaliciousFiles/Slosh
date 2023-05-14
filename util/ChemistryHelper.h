@@ -17,8 +17,9 @@ class ChemistryHelper {
 public:
     static double getGibbs(double temp, ChemicalEquation *equation);
 
-    static std::string singleReaction(std::string one, std::string three, std::string four);
-    static std::string doubleReaction(std::string one, std::string two, std::string three, std::string four);
+    static MaterialData* synthesis(std::string one, int c1, std::string three, int c3);
+    static MaterialData* singleReaction(std::string one, int c1, std::string three, int c3, std::string four, int c4);
+    static MaterialData* doubleReaction(std::string one, int c1, std::string two, int c2, std::string three, int c3, std::string four, int c4);
 
     static ChemicalEquation *products(Substance *reactant1, Substance* reactant2);
     static void balanceEquation(ChemicalEquation* equation);

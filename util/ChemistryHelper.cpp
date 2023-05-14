@@ -6,142 +6,134 @@
 #include <fstream>
 #include <string>
 
-std::string ChemistryHelper::singleReaction(std::string one, std::string three, std::string four) {
+//chemical reaction for a synthesis reaction
+//parameters: string one is an element with charge c1 and string three is an element with charge c3
+//returns MaterialData* product1 and product2
+MaterialData* ChemistryHelper::synthesis(std::string one, int c1, std::string three,int c3) {
     ifstream myfile ("Elements.csv");
-    string line;
-    string temp1, temp3;
-    int temp2;
-    int charge1, charge3, charge4;
-    string ion;
+    string line, ion;
     if (myfile.is_open()) {
         getline(myfile, line);
         while (getline(myfile, line)) {
             for (int i = 0; i < line.size(); i++) {
                 if (line[i] == ',') {
-                    temp1 = line.substr(1, i - 2);
-                    temp2 = stoi((line.substr(i + 1, 1)));
-                    temp3 = line.substr(i+3,6);
+                    if(one == line.substr(1, i - 2)) {
+                        c1 = stoi(line.substr(i+1,1));
+                        ion = line.substr(i+3,6);
+                    }
+                    if(three == line.substr(1, i - 2)) {
+                        c3 = stoi(line.substr(i+1,1));
+                        ion = line.substr(i+3,6);
+                    }
                 }
-            }
-            if (one == temp1) {
-                charge1 = temp2;
-                ion = temp3;
-            }
-            if (three == temp1) {
-                charge3 = temp2;
-            }
-            if (four == temp1) {
-                charge4 = temp2;
             }
         }
         myfile.close();
     }
-    std::string product1;
-    std::string product2;
+    MaterialData* product1 = MaterialData::SUBSTANCES[MaterialFormula({{one, c3}, {three, c1}})];
+    return product1;
+}
+
+//chemical reaction for a single-replacement reaction
+//parameters: string one is an element with charge c1
+    //string three and four are the elements of a single compound with charges c3 and c4 respectively
+//returns MaterialData* product1 and product2
+MaterialData* ChemistryHelper::singleReaction(std::string one, int c1, std::string three, int c3, std::string four, int c4) {
+    ifstream myfile ("Elements.csv");
+    string line, ion;
+    if (myfile.is_open()) {
+        getline(myfile, line);
+        while (getline(myfile, line)) {
+            for (int i = 0; i < line.size(); i++) {
+                if (line[i] == ',') {
+                    if(one == line.substr(1, i - 2)) {
+                        c1 = stoi(line.substr(i+1,1));
+                        ion = line.substr(i+3,6);
+                    }
+                }
+            }
+        }
+        myfile.close();
+    }
+    MaterialData* product1;
+    MaterialData* product2;
     if (ion == "cation") {
-        if(charge4 == 1 && charge1 == 1) {
-            product1 = one + four;
+        product1 = MaterialData::SUBSTANCES[MaterialFormula({{one, c4}, {four, c1}})];
+        if (three == "H" || three == "O" || three == "F" || three == "Cl" || three == "I" || three == "Br") {
+            product2 = MaterialData::SUBSTANCES[MaterialFormula({{three, 2}})];
         }
-        else if (charge4 == 1) {
-            product1 = one + four + to_string(charge1);
-        }
-        else if (charge1 == 1) {
-            product1 = one + to_string(charge4) + four;
-        }
-        else {
-            product1 = one + to_string(charge4) + four + to_string(charge1);
-        }
-        product2 = three;
+        else {product2 = MaterialData::SUBSTANCES[MaterialFormula({{three, 1}})];}
     }
     else {
-        if(charge3 == 1 && charge1 == 1) {
-            product1 = three + one;
+        product1 = MaterialData::SUBSTANCES[MaterialFormula({{three, c1}, {one, c3}})];
+        if (three == "H" || three == "O" || three == "F" || three == "Cl" || three == "I" || three == "Br") {
+            product2 = MaterialData::SUBSTANCES[MaterialFormula({{four, 2}})];
         }
-        else if (charge3 == 1) {
-            product1 = three + to_string(charge1) + one;
-        }
-        else if (charge1 == 1) {
-            product1 = three + one + to_string(charge3);
-        }
-        else {
-            product1 = three + to_string(charge1) + one + to_string(charge3);
-        }
-        product2 = four;
+        else {product2 = MaterialData::SUBSTANCES[MaterialFormula({{four, 1}})];}
     }
-    return product1 + " " + product2;
+    //state for product1 is aq
+    //state for product2 is s unless it's a diatomic
+}
+
+//chemical reaction for a double-replacement reaction
+//parameters: string one and two are elements of a single compound with charges c1 and c2 respectively
+    //string three and four are the elements of a single compound with charges c3 and c4 respectively
+//returns MaterialData* product1 and product2
+MaterialData* ChemistryHelper::doubleReaction(std::string one, int c1, std::string two, int c2, std::string three,int c3, std::string four, int c4) {
+    MaterialData* product1 = MaterialData::SUBSTANCES[MaterialFormula({{one, c4}, {four, c1}})];
+    MaterialData* product2 = MaterialData::SUBSTANCES[MaterialFormula({{two, c3}, {three, c4}})];
+    //states for these are aq
 }
 
 ChemicalEquation* ChemistryHelper::products(Substance* reactant1, Substance* reactant2) {
-    std::string temp1 = reactant1->getMaterial()->formula;
-    std::string part1;
-    std::string part2;
-    for (int s = 0; s < temp1.length(); s++) {
-        part1+=temp1[s];
-        if ((int)temp1[s] < 58 || (int)temp1[s] > 96) {
-            if ((int)temp1[s+1]<58) {
-                part1+=temp1[s+1];
-                if (s != temp1.length()-1) {
-                    for (int t = s+1; t < temp1.length(); t++) {
-                        part2+=temp1[t];
-                        if ((int)temp1[t] > 96) {
-                            break;
-                        }
-                    }
-                }
-                break;
-            }
-            if (s != temp1.length()-1) {
-                for (int t = s+1; t < temp1.length(); t++) {
-                    part2+=temp1[t];
-                    if ((int)temp1[t] > 96) {
-                        break;
-                    }
-                }
-            }
-            break;
+    std::string part1, part2, part3, part4;
+    int charge1 =1, charge2 =1, charge3 =1, charge4 = 1;
+    int temp = 0;
+    for (auto i : reactant1->getMaterial()->formula.elements) {
+        if (temp == 0) {
+            part1 = i.first;
+            charge2 = i.second;
+            temp = 1;
+        }
+        else {
+            part2 = i.first;
+            charge1 = i.second;
         }
     }
-    std::string temp2 = reactant2->getMaterial()->formula;
-    std::string part3;
-    std::string part4;
-    for (int s = 0; s < temp2.length(); s++) {
-        part3+=temp2[s];
-        if ((int)temp2[s] < 58 || (int)temp2[s] > 96) {
-            if ((int)temp2[s+1]<58) {
-                part3+=temp2[s+1];
-                if (s != temp2.length()-1) {
-                    for (int t = s+1; t < temp2.length(); t++) {
-                        part4+=temp2[t];
-                        if ((int)temp2[t] > 96) {
-                            break;
-                        }
-                    }
-                }
-                break;
-            }
-            if (s != temp2.length()-1) {
-                for (int t = s+1; t < temp2.length(); t++) {
-                    part4+=temp2[t];
-                    if ((int)temp2[t] > 96) {
-                        break;
-                    }
-                }
-            }
-            break;
+    temp = 0;
+    for (auto i : reactant2->getMaterial()->formula.elements) {
+        if (temp == 0) {
+            part3 = i.first;
+            charge4 = i.second;
+            temp = 1;
+        }
+        else {
+            part4 = i.first;
+            charge3 = i.second;
         }
     }
-    std::string reactionType;
-    if (part2.empty()) {
-        singleReaction(part1, part3, part4);
+    if (part2.empty() && part4.empty()) {
+        synthesis(part1, charge1, part3, charge3);
+    }
+    else if (part2.empty()) {
+        singleReaction(part1, charge1, part3, charge3, part4, charge4);
     }
     else if (part4.empty()) {
-        singleReaction(part3, part1, part2);
+        singleReaction(part3, charge3, part1, charge1, part2, charge2);
     }
     else {
-        reactionType = "double";
+        doubleReaction(part1, charge1, part2, charge2, part3, charge3, part4, charge4);
     }
-    Substance* product1;
-    Substance* product2;
+    std::string pro1;
+    std::string pro2;
+    for (int s = 0; s<reaction.size(); s++) {
+        if (reaction[s] == ' ') {
+            pro1 = reaction.substr(0, s);
+            pro2 = reaction.substr(s + 1, reaction.size() - (s + 1));
+        }
+    }
+    Substance* product1 = reactant1;
+    Substance* product2 = reactant2;
 }
 
 double ChemistryHelper::getGibbs(double temp, ChemicalEquation* equation) {

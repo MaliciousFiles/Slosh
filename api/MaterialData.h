@@ -9,16 +9,19 @@
 
 class MaterialData {
 public:
-    static std::map<std::string, MaterialData*> FLUIDS;
+    static std::map<MaterialFormula, MaterialData*> SUBSTANCES;
     static void initFluids();
 
     enum CompoundType {
         POLAR_COVALENT,
         NONPOLAR_COVALENT,
-        IONIC
+        IONIC,
+        ANION,
+        CATION
     };
 
     const std::string name;
+    const std::string form;
     const MaterialFormula formula;
     const double molarMass;
     const CompoundType compound;
@@ -27,7 +30,7 @@ public:
     const QColor color;
 private:
     // TODO: make this take in various stats about the fluid (like name)
-    MaterialData(std::string name, QColor color, MaterialFormula formula, double molarMass, CompoundType compound, double enthalpyFormation, double entropy) : name(std::move(name)), color(std::move(color)), formula(std::move(formula)), molarMass(std::move(molarMass)), compound(std::move(compound)), enthalpyFormation(enthalpyFormation), entropy(entropy) {};
+    MaterialData(std::string name, QColor color, std::string form, MaterialFormula formula, double molarMass, CompoundType compound, double enthalpyFormation, double entropy) : name(std::move(name)), color(std::move(color)), form(std::move(form)), formula(std::move(formula)), molarMass(std::move(molarMass)), compound(std::move(compound)), enthalpyFormation(enthalpyFormation), entropy(entropy) {};
     void init();
 };
 

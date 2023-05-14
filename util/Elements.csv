@@ -1,7 +1,5 @@
-"Element Name","Charge"
-"H",1
-"O",2
-"Na",1
-"Cl",1
-"Ca",2
-"F",1
+"Element Name","Charge","Ion"
+"Na",1"cation"
+"Cl",1"anion"
+"Ca",2"cation"
+"F",1"anion"
