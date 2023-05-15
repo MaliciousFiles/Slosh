@@ -39,7 +39,8 @@ NewFluidSidebar::NewFluidSidebar(Canvas* canvas, QWidget *parent) : SidebarWidge
             for (auto container : canvas -> getContainers()) {
                 if (container == obj) {
                     // TODO: use correct state
-                    container -> insertSubstance(new Substance(MaterialData::FLUIDS[pickFluid -> currentText().toStdString()], volume->slider->value(), Substance::State::AQUEOUS));
+                    container->addSubstance(new Substance(MaterialData::FLUIDS[pickFluid->currentText().toStdString()],
+                                                          volume->slider->value(), Substance::State::AQUEOUS));
                     consume = true;
                 }
             }

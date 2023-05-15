@@ -7,7 +7,9 @@
 #include "../../util/GlobalClickHandler.h"
 //#include "../../util/ChemistryHelper.h"
 #include <QtGui>
+#include <QMessageBox>
 #include <QLayout>
+#include <QPushButton>
 #include <QGraphicsOpacityEffect>
 
 const double Container::WH_RATIO = 0.75;
@@ -45,7 +47,22 @@ void Container::styleChildren() {
     }
 }
 
-void Container::insertSubstance(Substance* substance){
+QWidget* Container::createSubstanceWidget(Substance* substance) {
+    auto* widget = new QWidget(this);
+    widget->show();
+    widget->setToolTip(substance->getMaterial()->formula.toString()+" ("+QString::number(substance->getVolume())+" mL)");
+
+    QPalette pal;
+    QColor color = substance->getMaterial()->color;
+    color.setAlpha(255*0.25);
+    pal.setColor(QPalette::Window, color);
+    widget->setAutoFillBackground(true);
+    widget->setPalette(pal);
+
+    return widget;
+}
+
+void Container::addSubstance(Substance* substance){
     bool found = false;
     for (auto& s : substances) {
         if (s.first->getMaterial() == substance->getMaterial()) {
@@ -55,29 +72,52 @@ void Container::insertSubstance(Substance* substance){
         }
     }
     if (!found) {
-        auto* widget = new QWidget(this);
-        widget->show();
-        widget->setToolTip(substance->getMaterial()->formula.toString()+" ("+QString::number(substance->getVolume())+" mL)");
-
-        QPalette pal;
-        QColor color = substance->getMaterial()->color;
-        color.setAlpha(255*0.25);
-        pal.setColor(QPalette::Window, color);
-        widget->setAutoFillBackground(true);
-        widget->setPalette(pal);
-
-        substances[substance] = widget;
+        substances[substance] = createSubstanceWidget(substance);
     }
 
     styleChildren();
 
-    /*
-    ChemicalEquation* equation = ChemistryHelper::getChemicalEquation(substances.data(), substances.size());
+    ChemicalEquation* equation = nullptr;//ChemistryHelper::getChemicalEquation(substances.data(), substances.size());
 
-    if (ChemistryHelper::getGibbs(temperature, equation) < 0) {
-        // TODO: enact reaction
-        qDebug() << "Reaction occurred";
-    }*/
+    if (/*ChemistryHelper::getGibbs(temperature, equation)*/-1 < 0) {
+        /*std::pair<MaterialData*, int> limiting;
+        double limitingMoles;
+        for (auto& s : equation->reactants) {
+            Substance* sub = getSubstance(s.first);
+            double moles = sub->getVolume() * s.first->density / s.first->molarMass;
+
+            if (limiting.first == nullptr || moles * limiting.second / s.second < limitingMoles) {
+                limiting = s;
+                limitingMoles = moles;
+            }
+        }
+
+        for (auto& s : equation->reactants) {
+            if (s.first == limiting.first) {
+                removeSubstance(s.first);
+            } else {
+                Substance* sub = getSubstance(s.first);
+                sub->setVolume(sub->getVolume() - limitingMoles * s.second / limiting.second * s.first->molarMass / s.first->density);
+            }
+        }
+        for (auto& s : equation->products) {
+            auto* sub = new Substance(s.first, limitingMoles * s.second / limiting.second * s.first->molarMass /
+                                                s.first->density);
+
+            substances[sub] = createSubstanceWidget(sub);
+        }*/
+
+        auto* message = new QMessageBox();
+        message->setText("Reaction Occurred");
+        message->setInformativeText("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.");
+        message->addButton("Reset Container", QMessageBox::AcceptRole);
+        message->exec();
+
+        for (auto& s : substances) {
+            delete s.second;
+        }
+        substances.clear();
+    }
 }
 
 void Container::setLidded(bool hasLid) {
@@ -138,14 +178,20 @@ void Container::paintEvent(QPaintEvent *event){
 }
 
 void Container::removeSubstance(MaterialData* material) {
+    Substance* s = getSubstance(material);
+    delete substances[s];
+    substances.erase(substances.find(s));
+    styleChildren();
+}
+
+Substance* Container::getSubstance(MaterialData* material) {
     for (auto& s : substances) {
         if (s.first->getMaterial() == material) {
-            substances.erase(substances.find(s.first));
-            delete s.second;
-            styleChildren();
-            return;
+            return s.first;
         }
     }
+
+    return nullptr;
 }
 
 void Container::mousePressEvent(QMouseEvent* event) {

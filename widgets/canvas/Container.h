@@ -30,6 +30,7 @@ class Container : public Clickable {
     void mouseReleaseEvent(QMouseEvent* event) override;
 
 public:
+    QWidget* createSubstanceWidget(Substance* substance);
 
     void styleChildren();
 
@@ -46,8 +47,9 @@ public:
     void setTemperature(double temp);
 
     inline std::map<Substance*, QWidget*> getSubstances() const { return substances; }
-    void insertSubstance(Substance* substance);
+    void addSubstance(Substance* substance);
     void removeSubstance(MaterialData* material);
+    Substance* getSubstance(MaterialData* material);
 
     void setCursor(Qt::CursorShape shape);
 };
