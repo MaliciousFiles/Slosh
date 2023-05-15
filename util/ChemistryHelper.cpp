@@ -179,7 +179,7 @@ void ChemistryHelper::balanceEquation(ChemicalEquation* equation) {
             productAmts[i->first] += i->second * product.second;
         }
     }
-    qDebug() << "Equation: " << equation->toString().c_str();
+
     for (auto it : equation->reactants) {
         for (const auto& i : it.first->formula.elements) {
             if (reactantAmts[i.first] != productAmts[i.first]){
