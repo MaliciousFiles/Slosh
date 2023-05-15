@@ -8,6 +8,7 @@
 #include <map>
 #include <utility>
 #include <string>
+#include <vector>
 #include <QtCore/QString>
 
 class MaterialFormula {

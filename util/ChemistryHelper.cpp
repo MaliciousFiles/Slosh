@@ -8,6 +8,7 @@
 #include <string>
 #include <QFile>
 #include <QTextStream>
+#include <QDebug>
 
 //chemical reaction for a synthesis reaction
 //@paran string one is an element with charge c1 and string three is an element with charge c3
@@ -178,30 +179,21 @@ void ChemistryHelper::balanceEquation(ChemicalEquation* equation) {
             productAmts[i->first] += i->second * product.second;
         }
     }
-    for (auto it = equation->reactants.begin(); it != equation->reactants.end(); it++) {
-        for (auto i = it->first->formula.elements.begin(); i != it->first->formula.elements.end(); i++) {
-            if (reactantAmts[i->first] != productAmts[i->first]){
-                if(reactantAmts[i->first] > productAmts[i->first]){
-                    for (auto it2 = equation->products.begin(); it2 != equation->products.end(); it2++) {
-                        if (std::find_if(it2->first->formula.elements.begin(), it2->first->formula.elements.end(), [i] (const std::pair<std::string, int>& p) {return p.first == i->first;}) != it2->first->formula.elements.end()) {
-                            if(((equation->products[it2->first]) % 2) != 0){
-                                equation->products[it2->first]++;
-                            }
-                            else{
-                                equation->products[it2->first]*=2;
-                            }
+    qDebug() << "Equation: " << equation->toString().c_str();
+    for (auto it : equation->reactants) {
+        for (const auto& i : it.first->formula.elements) {
+            if (reactantAmts[i.first] != productAmts[i.first]){
+                if(reactantAmts[i.first] > productAmts[i.first]){
+                    for (auto it2 : equation->products) {
+                        if (std::find_if(it2.first->formula.elements.begin(), it2.first->formula.elements.end(), [i] (const std::pair<std::string, int>& p) {return p.first == i.first;}) != it2.first->formula.elements.end()) {
+                            equation->products[it2.first]++;
                         }
                     }
                 }
-                else if(reactantAmts[i->first] < productAmts[i->first]){
-                    for (auto it2 = equation->reactants.begin(); it2 != equation->reactants.end(); it2++) {
-                        if (std::find_if(it2->first->formula.elements.begin(), it2->first->formula.elements.end(), [i] (const std::pair<std::string, int>& p) {return p.first == i->first;}) != it2->first->formula.elements.end()) {
-                            if(((equation->reactants[it2->first]) % 2) != 0){
-                                equation->reactants[it2->first]++;
-                            }
-                            else{
-                                equation->reactants[it2->first]*=2;
-                            }
+                else if(reactantAmts[i.first] < productAmts[i.first]){
+                    for (auto it2 : equation->reactants) {
+                        if (std::find_if(it2.first->formula.elements.begin(), it2.first->formula.elements.end(), [i] (const std::pair<std::string, int>& p) {return p.first == i.first;}) != it2.first->formula.elements.end()) {
+                            equation->reactants[it2.first]++;
                         }
                     }
                 }
@@ -225,8 +217,6 @@ void ChemistryHelper::balanceEquation(ChemicalEquation* equation) {
                     }
                 }
                 balanceEquation(equation);
-            }
-            else{
                 return;
             }
         }

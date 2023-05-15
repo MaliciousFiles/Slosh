@@ -3,6 +3,8 @@
 #include "api/MaterialData.h"
 #include "util/TooltipRichTextFilter.h"
 #include "util/GlobalClickHandler.h"
+#include "api/ChemicalEquation.h"
+#include "util/ChemistryHelper.h"
 
 int main(int argc, char *argv[]) {
     QApplication a(argc, argv);

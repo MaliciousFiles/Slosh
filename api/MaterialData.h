@@ -31,7 +31,7 @@ public:
     const double enthalpyFormation;
     const double entropy;
     const QColor color;
-private:
+public:
     MaterialData(std::string name, QColor color, QString form, MaterialFormula formula, double molarMass, double density, CompoundType compound, double enthalpyFormation, double entropy) : name(std::move(name)), color(color), form(std::move(form)), formula(std::move(formula)), molarMass(molarMass), density(density), compound(compound), enthalpyFormation(enthalpyFormation), entropy(entropy) {};
     void init();
     MaterialData* reactant();
