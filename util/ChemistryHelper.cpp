@@ -31,11 +31,8 @@ ChemicalEquation ChemistryHelper::synthesis(std::string one, int c1, std::string
         }
         myfile.close();
     }
-    Substance* product;
-    product->setMaterial(MaterialData::SUBSTANCES[MaterialFormula({{one, c3}, {three, c1}})]);
-    product->setState(Substance::SOLID);
-    product->setVolume(reactant1->getVolume()+reactant2->getVolume());
-    return ChemicalEquation({{reactant1->getMaterial(),1}, {reactant2->getMaterial(),1}},{product->getMaterial(),1});
+    Substance* product = new Substance(MaterialData::SUBSTANCES[MaterialFormula({{one, c3}, {three, c1}}).toString().toStdString()], reactant1->getVolume()+reactant2->getVolume(), Substance::SOLID);
+    return ChemicalEquation({{reactant1->getMaterial(),1}, {reactant2->getMaterial(),1}},{{product->getMaterial(),1}});
 }
 
 //chemical reaction for a single-replacement reaction
@@ -62,18 +59,18 @@ ChemicalEquation ChemistryHelper::singleReaction(std::string one, int c1, std::s
     MaterialData* p1;
     MaterialData* p2;
     if (ion == "cation") {
-        p1 = MaterialData::SUBSTANCES[MaterialFormula({{one, c4}, {four, c1}})];
+        p1 = MaterialData::SUBSTANCES[MaterialFormula({{one, c4}, {four, c1}}).toString().toStdString()];
         if (three == "H" || three == "N" || three == "O" || three == "F" || three == "Cl" || three == "I" || three == "Br") {
-            p2 = MaterialData::SUBSTANCES[MaterialFormula({{three, 2}})];
+            p2 = MaterialData::SUBSTANCES[MaterialFormula({{three, 2}}).toString().toStdString()];
         }
-        else {p2 = MaterialData::SUBSTANCES[MaterialFormula({{three, 1}})];}
+        else {p2 = MaterialData::SUBSTANCES[MaterialFormula({{three, 1}}).toString().toStdString()];}
     }
     else {
-        p1 = MaterialData::SUBSTANCES[MaterialFormula({{three, c1}, {one, c3}})];
+        p1 = MaterialData::SUBSTANCES[MaterialFormula({{three, c1}, {one, c3}}).toString().toStdString()];
         if (four == "H" || four == "N" || four == "O" || four == "F" || four == "Cl" || four == "I" || four == "Br") {
-            p2 = MaterialData::SUBSTANCES[MaterialFormula({{four, 2}})];
+            p2 = MaterialData::SUBSTANCES[MaterialFormula({{four, 2}}).toString().toStdString()];
         }
-        else {p2 = MaterialData::SUBSTANCES[MaterialFormula({{four, 1}})];}
+        else {p2 = MaterialData::SUBSTANCES[MaterialFormula({{four, 1}}).toString().toStdString()];}
     }
     Substance* product1;
     product1->setMaterial(p1);
@@ -96,10 +93,10 @@ ChemicalEquation ChemistryHelper::singleReaction(std::string one, int c1, std::s
 //@return MaterialData* product1 and product2
 ChemicalEquation ChemistryHelper::doubleReaction(std::string one, int c1, std::string two, int c2, std::string three,int c3, std::string four, int c4, Substance* reactant1, Substance* reactant2) {
     Substance* product1;
-    product1->setMaterial(MaterialData::SUBSTANCES[MaterialFormula({{one, c4}, {four, c1}})]);
+    product1->setMaterial(MaterialData::SUBSTANCES[MaterialFormula({{one, c4}, {four, c1}}).toString().toStdString()]);
     product1->setState(Substance::AQUEOUS);
     Substance* product2;
-    product2->setMaterial(MaterialData::SUBSTANCES[MaterialFormula({{two, c3}, {three, c4}})]);
+    product2->setMaterial(MaterialData::SUBSTANCES[MaterialFormula({{two, c3}, {three, c4}}).toString().toStdString()]);
     product2->setState(Substance::AQUEOUS);
     return ChemicalEquation({{reactant1->getMaterial(),1}, {reactant2->getMaterial(),1}},{{product1->getMaterial(),1},{product2->getMaterial(),1}});
 }

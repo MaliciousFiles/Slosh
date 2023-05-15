@@ -1,6 +1,6 @@
 #include "MaterialData.h"
 
-std::map<MaterialFormula, MaterialData*> MaterialData::SUBSTANCES = {};
+std::map<std::string, MaterialData*> MaterialData::SUBSTANCES = {};
 
 void MaterialData::initFluids() {
     // TODO: read from a file or something
@@ -26,5 +26,5 @@ void MaterialData::initFluids() {
 }
 
 void MaterialData::init() {
-    SUBSTANCES[formula] = this;
+    SUBSTANCES[formula.toString().toStdString()] = this;
 }

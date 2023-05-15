@@ -23,6 +23,6 @@ public:
 
     static ChemicalEquation products(Substance *reactant1, Substance* reactant2);
     static void balanceEquation(ChemicalEquation* equation);
-}
+};
 
 #endif //SLOSH_CHEMISTRYHELPER_H

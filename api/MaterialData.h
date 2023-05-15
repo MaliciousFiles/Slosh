@@ -9,7 +9,7 @@
 
 class MaterialData {
 public:
-    static std::map<MaterialFormula, MaterialData*> SUBSTANCES;
+    static std::map<std::string, MaterialData*> SUBSTANCES;
     static void initFluids();
 
     enum CompoundType {
