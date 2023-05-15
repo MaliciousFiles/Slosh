@@ -7,6 +7,8 @@
 
 
 #include <utility>
+#include <fstream>
+#include <string>
 
 #include "MaterialData.h"
 
@@ -30,6 +32,7 @@ public:
     void setMaterial(MaterialData* mat);
     State getState() const;
     void setState(State state);
+    State phaseChange (int temp);
 
 private:
     int volume;

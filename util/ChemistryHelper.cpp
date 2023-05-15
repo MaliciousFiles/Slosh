@@ -3,13 +3,14 @@
 //
 
 #include "ChemistryHelper.h"
+#include "../api/ChemicalEquation.h"
 #include <fstream>
 #include <string>
 
 //chemical reaction for a synthesis reaction
-//parameters: string one is an element with charge c1 and string three is an element with charge c3
-//returns MaterialData* product1 and product2
-MaterialData* ChemistryHelper::synthesis(std::string one, int c1, std::string three,int c3) {
+//@paran string one is an element with charge c1 and string three is an element with charge c3
+//@return MaterialData* product1 and product2
+ChemicalEquation ChemistryHelper::synthesis(std::string one, int c1, std::string three, int c3, Substance* reactant1, Substance* reactant2) {
     ifstream myfile ("Elements.csv");
     string line, ion;
     if (myfile.is_open()) {
@@ -30,15 +31,18 @@ MaterialData* ChemistryHelper::synthesis(std::string one, int c1, std::string th
         }
         myfile.close();
     }
-    MaterialData* product1 = MaterialData::SUBSTANCES[MaterialFormula({{one, c3}, {three, c1}})];
-    return product1;
+    Substance* product;
+    product->setMaterial(MaterialData::SUBSTANCES[MaterialFormula({{one, c3}, {three, c1}})]);
+    product->setState(Substance::SOLID);
+    product->setVolume(reactant1->getVolume()+reactant2->getVolume());
+    return ChemicalEquation({{reactant1->getMaterial(),1}, {reactant2->getMaterial(),1}},{product->getMaterial(),1});
 }
 
 //chemical reaction for a single-replacement reaction
-//parameters: string one is an element with charge c1
+//@param string one is an element with charge c1
     //string three and four are the elements of a single compound with charges c3 and c4 respectively
-//returns MaterialData* product1 and product2
-MaterialData* ChemistryHelper::singleReaction(std::string one, int c1, std::string three, int c3, std::string four, int c4) {
+//@return MaterialData* product1 and product2
+ChemicalEquation ChemistryHelper::singleReaction(std::string one, int c1, std::string three, int c3, std::string four, int c4, Substance* reactant1, Substance* reactant2) {
     ifstream myfile ("Elements.csv");
     string line, ion;
     if (myfile.is_open()) {
@@ -55,37 +59,55 @@ MaterialData* ChemistryHelper::singleReaction(std::string one, int c1, std::stri
         }
         myfile.close();
     }
-    MaterialData* product1;
-    MaterialData* product2;
+    MaterialData* p1;
+    MaterialData* p2;
     if (ion == "cation") {
-        product1 = MaterialData::SUBSTANCES[MaterialFormula({{one, c4}, {four, c1}})];
-        if (three == "H" || three == "O" || three == "F" || three == "Cl" || three == "I" || three == "Br") {
-            product2 = MaterialData::SUBSTANCES[MaterialFormula({{three, 2}})];
+        p1 = MaterialData::SUBSTANCES[MaterialFormula({{one, c4}, {four, c1}})];
+        if (three == "H" || three == "N" || three == "O" || three == "F" || three == "Cl" || three == "I" || three == "Br") {
+            p2 = MaterialData::SUBSTANCES[MaterialFormula({{three, 2}})];
         }
-        else {product2 = MaterialData::SUBSTANCES[MaterialFormula({{three, 1}})];}
+        else {p2 = MaterialData::SUBSTANCES[MaterialFormula({{three, 1}})];}
     }
     else {
-        product1 = MaterialData::SUBSTANCES[MaterialFormula({{three, c1}, {one, c3}})];
-        if (three == "H" || three == "O" || three == "F" || three == "Cl" || three == "I" || three == "Br") {
-            product2 = MaterialData::SUBSTANCES[MaterialFormula({{four, 2}})];
+        p1 = MaterialData::SUBSTANCES[MaterialFormula({{three, c1}, {one, c3}})];
+        if (four == "H" || four == "N" || four == "O" || four == "F" || four == "Cl" || four == "I" || four == "Br") {
+            p2 = MaterialData::SUBSTANCES[MaterialFormula({{four, 2}})];
         }
-        else {product2 = MaterialData::SUBSTANCES[MaterialFormula({{four, 1}})];}
+        else {p2 = MaterialData::SUBSTANCES[MaterialFormula({{four, 1}})];}
     }
-    //state for product1 is aq
+    Substance* product1;
+    product1->setMaterial(p1);
+    product1->setState(Substance::AQUEOUS);
+    Substance* product2;
+    product2->setMaterial(p2);
+    if (p2->form == "H2" || p2->form == "N2" || p2->form == "O2" || p2->form == "F2"|| p2->form == "Cl2") {
+        product2->setState(Substance::GAS);
+    }
+    else if (p2->form == "I2") {product2->setState(Substance::SOLID);}
+    else if (p2->form == "Br2") {product2->setState(Substance::LIQUID);}
+    else {product2->setState(Substance::AQUEOUS);}
+    return ChemicalEquation({{reactant1->getMaterial(),1}, {reactant2->getMaterial(),1}},{{product1->getMaterial(),1},{product2->getMaterial(),1}});
     //state for product2 is s unless it's a diatomic
 }
 
 //chemical reaction for a double-replacement reaction
-//parameters: string one and two are elements of a single compound with charges c1 and c2 respectively
+//@param string one and two are elements of a single compound with charges c1 and c2 respectively
     //string three and four are the elements of a single compound with charges c3 and c4 respectively
-//returns MaterialData* product1 and product2
-MaterialData* ChemistryHelper::doubleReaction(std::string one, int c1, std::string two, int c2, std::string three,int c3, std::string four, int c4) {
-    MaterialData* product1 = MaterialData::SUBSTANCES[MaterialFormula({{one, c4}, {four, c1}})];
-    MaterialData* product2 = MaterialData::SUBSTANCES[MaterialFormula({{two, c3}, {three, c4}})];
-    //states for these are aq
+//@return MaterialData* product1 and product2
+ChemicalEquation ChemistryHelper::doubleReaction(std::string one, int c1, std::string two, int c2, std::string three,int c3, std::string four, int c4, Substance* reactant1, Substance* reactant2) {
+    Substance* product1;
+    product1->setMaterial(MaterialData::SUBSTANCES[MaterialFormula({{one, c4}, {four, c1}})]);
+    product1->setState(Substance::AQUEOUS);
+    Substance* product2;
+    product2->setMaterial(MaterialData::SUBSTANCES[MaterialFormula({{two, c3}, {three, c4}})]);
+    product2->setState(Substance::AQUEOUS);
+    return ChemicalEquation({{reactant1->getMaterial(),1}, {reactant2->getMaterial(),1}},{{product1->getMaterial(),1},{product2->getMaterial(),1}});
 }
 
-ChemicalEquation* ChemistryHelper::products(Substance* reactant1, Substance* reactant2) {
+//finds the products and returns chemical equation
+//@param two reactants that undergo the chemical reaction
+//@return ChemicalEquation of reactants and products
+ChemicalEquation ChemistryHelper::products(Substance* reactant1, Substance* reactant2) {
     std::string part1, part2, part3, part4;
     int charge1 =1, charge2 =1, charge3 =1, charge4 = 1;
     int temp = 0;
@@ -113,27 +135,18 @@ ChemicalEquation* ChemistryHelper::products(Substance* reactant1, Substance* rea
         }
     }
     if (part2.empty() && part4.empty()) {
-        synthesis(part1, charge1, part3, charge3);
+        return synthesis(part1, charge1, part3, charge3, reactant1, reactant2);
     }
     else if (part2.empty()) {
-        singleReaction(part1, charge1, part3, charge3, part4, charge4);
+        return singleReaction(part1, charge1, part3, charge3, part4, charge4, reactant1, reactant2);
+        //set products
     }
     else if (part4.empty()) {
-        singleReaction(part3, charge3, part1, charge1, part2, charge2);
+        return singleReaction(part3, charge3, part1, charge1, part2, charge2, reactant1, reactant2);
     }
     else {
-        doubleReaction(part1, charge1, part2, charge2, part3, charge3, part4, charge4);
+        return doubleReaction(part1, charge1, part2, charge2, part3, charge3, part4, charge4, reactant1, reactant2);
     }
-    std::string pro1;
-    std::string pro2;
-    for (int s = 0; s<reaction.size(); s++) {
-        if (reaction[s] == ' ') {
-            pro1 = reaction.substr(0, s);
-            pro2 = reaction.substr(s + 1, reaction.size() - (s + 1));
-        }
-    }
-    Substance* product1 = reactant1;
-    Substance* product2 = reactant2;
 }
 
 double ChemistryHelper::getGibbs(double temp, ChemicalEquation* equation) {

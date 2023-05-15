@@ -3,6 +3,8 @@
 //
 
 #include "Substance.h"
+#include <fstream>
+#include <string>
 
 bool Substance::operator==(const Substance& other) const {
     return volume == other.volume;
@@ -30,4 +32,30 @@ Substance::State Substance::getState() const {
 
 void Substance::setState(State state) {
     this->state = state;
+}
+
+//performs phaseChange depending on the temperature and melting/boiling point of the substance
+//@param temperature int
+//@return State (enum) for the substance
+Substance::State Substance::phaseChange (int temp) {
+    std::ifstream newfile ("Reactants.csv");
+    std::string line;
+    int MP = 0, BP = 0;
+    if (newfile.is_open()) {
+        getline(newfile, line);
+        while (getline(newfile, line)) {
+            for (int i = 0; i < line.size(); i++) {
+                if (line[i] == ',') {
+                    if(material->form == line.substr(1, i - 2)) {
+                        MP = stoi(line.substr(i+1, (line.find('|')-(i+1))));
+                        BP = stoi(line.substr((line.find('|')+1),(line.length()-line.find('|'))));
+                    }
+                }
+            }
+        }
+        newfile.close();
+    }
+    if(temp <= MP) {return SOLID;}
+    else if (temp >= BP) {return GAS;}
+    else {return LIQUID;}
 }
