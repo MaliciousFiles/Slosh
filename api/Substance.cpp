@@ -46,7 +46,7 @@ Substance::State Substance::phaseChange (int temp) {
         while (getline(newfile, line)) {
             for (int i = 0; i < line.size(); i++) {
                 if (line[i] == ',') {
-                    if(material->form == line.substr(1, i - 2)) {
+                    if(material->form.toStdString() == line.substr(1, i - 2)) {
                         MP = stoi(line.substr(i+1, (line.find('|')-(i+1))));
                         BP = stoi(line.substr((line.find('|')+1),(line.length()-line.find('|'))));
                     }

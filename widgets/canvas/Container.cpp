@@ -5,12 +5,13 @@
 #include "Container.h"
 #include "../../api/ChemicalEquation.h"
 #include "../../util/GlobalClickHandler.h"
-//#include "../../util/ChemistryHelper.h"
+#include "../../util/ChemistryHelper.h"
 #include <QtGui>
 #include <QMessageBox>
 #include <QLayout>
 #include <QPushButton>
 #include <QGraphicsOpacityEffect>
+#include <QLabel>
 
 const double Container::WH_RATIO = 0.75;
 const double Container::PIXELS_PER_CM = 30;
@@ -41,7 +42,7 @@ void Container::styleChildren() {
         int h = std::min(PIXELS_PER_CM * s.first->getVolume()/pow(width / PIXELS_PER_CM, 2), height);
 
         s.second->setGeometry(WALL_WIDTH, WALL_WIDTH + height - i - h, width, h);
-        s.second->setToolTip(s.first->getMaterial()->formula.toString()+" ("+QString::number(s.first->getVolume())+" mL)");
+        s.second->setToolTip(s.first->getMaterial()->form+" ("+QString::number(s.first->getVolume())+" mL)");
 
         i += h;
     }
@@ -50,12 +51,12 @@ void Container::styleChildren() {
 QWidget* Container::createSubstanceWidget(Substance* substance) {
     auto* widget = new QWidget(this);
     widget->show();
-    widget->setToolTip(substance->getMaterial()->formula.toString()+" ("+QString::number(substance->getVolume())+" mL)");
 
     QPalette pal;
     QColor color = substance->getMaterial()->color;
     color.setAlpha(255*0.25);
     pal.setColor(QPalette::Window, color);
+    pal.setColor(QPalette::WindowText, Qt::darkGray);
     widget->setAutoFillBackground(true);
     widget->setPalette(pal);
 
@@ -77,43 +78,60 @@ void Container::addSubstance(Substance* substance){
 
     styleChildren();
 
-    ChemicalEquation* equation = nullptr;//ChemistryHelper::getChemicalEquation(substances.data(), substances.size());
+    if (substances.size() == 2) {
+        std::vector<Substance*> keys;
+        std::transform(substances.begin(), substances.end(), std::back_inserter(keys),[](decltype(substances)::value_type const &pair) {return pair.first;});
 
-    if (/*ChemistryHelper::getGibbs(temperature, equation)*/-1 < 0) {
-        /*std::pair<MaterialData*, int> limiting;
-        double limitingMoles;
-        for (auto& s : equation->reactants) {
-            Substance* sub = getSubstance(s.first);
-            double moles = sub->getVolume() * s.first->density / s.first->molarMass;
+        ChemicalEquation *equation = ChemistryHelper::products(keys[0],
+                                                               keys[1]);
+        ChemistryHelper::balanceEquation(equation);
+        bool favorable = ChemistryHelper::getGibbs(temperature, equation) < 0;
 
-            if (limiting.first == nullptr || moles * limiting.second / s.second < limitingMoles) {
-                limiting = s;
-                limitingMoles = moles;
+        if (favorable) {
+            std::pair<MaterialData *, int> limiting;
+            double limitingMoles;
+            for (auto &s: equation->reactants) {
+                Substance *sub = getSubstance(s.first);
+                double moles = sub->getVolume() * s.first->density / s.first->molarMass;
+
+                if (limiting.first == nullptr || moles * limiting.second / s.second < limitingMoles) {
+                    limiting = s;
+                    limitingMoles = moles;
+                }
             }
+
+            for (auto &s: equation->reactants) {
+                if (s.first == limiting.first) {
+                    removeSubstance(s.first);
+                } else {
+                    Substance *sub = getSubstance(s.first);
+                    sub->setVolume(sub->getVolume() -
+                                   limitingMoles * s.second / limiting.second * s.first->molarMass / s.first->density);
+                }
+            }
+            for (auto &s: equation->products) {
+                auto *sub = new Substance(s.first, limitingMoles * s.second / limiting.second * s.first->molarMass /
+                                                   s.first->density, Substance::AQUEOUS);
+
+                substances[sub] = createSubstanceWidget(sub);
+            }
+            styleChildren();
         }
 
-        for (auto& s : equation->reactants) {
-            if (s.first == limiting.first) {
-                removeSubstance(s.first);
-            } else {
-                Substance* sub = getSubstance(s.first);
-                sub->setVolume(sub->getVolume() - limitingMoles * s.second / limiting.second * s.first->molarMass / s.first->density);
-            }
-        }
-        for (auto& s : equation->products) {
-            auto* sub = new Substance(s.first, limitingMoles * s.second / limiting.second * s.first->molarMass /
-                                                s.first->density);
-
-            substances[sub] = createSubstanceWidget(sub);
-        }*/
-
-        auto* message = new QMessageBox();
-        message->setText("Reaction Occurred");
-        message->setInformativeText("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.");
+        auto *message = new QMessageBox();
+        message->setText(!favorable ? "No Reaction Occurred" : equation->type == ChemicalEquation::DOUBLE_REPLACEMENT
+                                                               ? "Double Replacement Reaction Occurred" :
+                                                               equation->type == ChemicalEquation::SINGLE_REPLACEMENT
+                                                               ? "Single Replacement Reaction Occurred"
+                                                               : "Synthesis Reaction Occurred");
+        message->setInformativeText(!favorable
+                                    ? "The reaction was not thermodynamically favorable. Try adjusting the temperature of the container and trying again."
+                                    : "The reaction was thermodynamically favorable: " +
+                                      QString(equation->toString().c_str()));
         message->addButton("Reset Container", QMessageBox::AcceptRole);
         message->exec();
 
-        for (auto& s : substances) {
+        for (auto &s: substances) {
             delete s.second;
         }
         substances.clear();

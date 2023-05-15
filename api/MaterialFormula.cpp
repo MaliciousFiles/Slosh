@@ -4,7 +4,7 @@
 
 #include "MaterialFormula.h"
 
-MaterialFormula::MaterialFormula(std::map<std::string, int> elements) : elements(std::move(elements)) {
+MaterialFormula::MaterialFormula(std::vector<std::pair<std::string, int>> elements) : elements(std::move(elements)) {
 
 };
 

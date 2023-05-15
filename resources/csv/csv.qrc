@@ -1,0 +1,6 @@
+<!DOCTYPE RCC><RCC version="1.0">
+    <qresource prefix="/csv">
+        <file alias="Elements">Elements.csv</file>
+        <file alias="Reactants">Reactants.csv</file>
+    </qresource>
+</RCC>

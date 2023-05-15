@@ -14,10 +14,19 @@ typedef std::map<MaterialData*, int> Side;
 class ChemicalEquation {
 
 public:
+    enum ReactionType {
+        SYNTHESIS,
+        SINGLE_REPLACEMENT,
+        DOUBLE_REPLACEMENT
+    };
+
     Side reactants;
     Side products;
+    ReactionType type;
 
-    ChemicalEquation(Side reactants, Side products);
+    ChemicalEquation(Side reactants, Side products, ReactionType type);
+
+    std::string toString();
 };
 
 

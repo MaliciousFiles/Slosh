@@ -15,7 +15,7 @@ NewFluidSidebar::NewFluidSidebar(Canvas* canvas, QWidget *parent) : SidebarWidge
     QPalette pickPal;
     pickPal.setColor(QPalette::Window, Qt::transparent);
     pickFluid->setPalette(pickPal);
-    for (const std::pair<const std::string, MaterialData *>& d : MaterialData::FLUIDS) pickFluid->insertItem(0, d.first.c_str());
+    for (MaterialData* d : MaterialData::REACTANTS) pickFluid->insertItem(0, d->name.c_str());
     pickFluid->setCurrentIndex(0);
     pickFluid->setFocusPolicy(Qt::TabFocus);
 
@@ -39,7 +39,7 @@ NewFluidSidebar::NewFluidSidebar(Canvas* canvas, QWidget *parent) : SidebarWidge
             for (auto container : canvas -> getContainers()) {
                 if (container == obj) {
                     // TODO: use correct state
-                    container->addSubstance(new Substance(MaterialData::FLUIDS[pickFluid->currentText().toStdString()],
+                    container->addSubstance(new Substance(MaterialData::SUBSTANCES[MaterialData::FORMULAS[pickFluid->currentText().toStdString()]],
                                                           volume->slider->value(), Substance::State::AQUEOUS));
                     consume = true;
                 }

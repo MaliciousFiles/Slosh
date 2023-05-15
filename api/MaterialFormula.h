@@ -13,9 +13,9 @@
 class MaterialFormula {
 
 public:
-    std::map<std::string, int> elements;
+    std::vector<std::pair<std::string, int>> elements;
 
-    explicit MaterialFormula(std::map<std::string, int> elements);
+    explicit MaterialFormula(std::vector<std::pair<std::string, int>> elements);
     QString toString() const;
 };
 

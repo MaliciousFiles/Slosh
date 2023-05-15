@@ -6,16 +6,20 @@
 #include "../api/ChemicalEquation.h"
 #include <fstream>
 #include <string>
+#include <QFile>
+#include <QTextStream>
 
 //chemical reaction for a synthesis reaction
 //@paran string one is an element with charge c1 and string three is an element with charge c3
 //@return MaterialData* product1 and product2
-ChemicalEquation ChemistryHelper::synthesis(std::string one, int c1, std::string three, int c3, Substance* reactant1, Substance* reactant2) {
-    ifstream myfile ("Elements.csv");
-    string line, ion;
-    if (myfile.is_open()) {
-        getline(myfile, line);
-        while (getline(myfile, line)) {
+ChemicalEquation* ChemistryHelper::synthesis(std::string one, int c1, std::string three, int c3, Substance* reactant1, Substance* reactant2) {
+    QFile qfile(":/csv/Elements");
+    std::string line, ion;
+    if (qfile.open(QIODevice::ReadOnly)) {
+        QTextStream myfile(&qfile);
+        myfile.readLine();
+        while (!myfile.atEnd()) {
+            line = myfile.readLine().toStdString();
             for (int i = 0; i < line.size(); i++) {
                 if (line[i] == ',') {
                     if(one == line.substr(1, i - 2)) {
@@ -29,22 +33,25 @@ ChemicalEquation ChemistryHelper::synthesis(std::string one, int c1, std::string
                 }
             }
         }
-        myfile.close();
+        qfile.close();
     }
-    Substance* product = new Substance(MaterialData::SUBSTANCES[MaterialFormula({{one, c3}, {three, c1}}).toString().toStdString()], reactant1->getVolume()+reactant2->getVolume(), Substance::SOLID);
-    return ChemicalEquation({{reactant1->getMaterial(),1}, {reactant2->getMaterial(),1}},{{product->getMaterial(),1}});
+
+    auto* product = new Substance(MaterialData::SUBSTANCES[MaterialFormula({{one, c3}, {three, c1}}).toString().toStdString()], reactant1->getVolume()+reactant2->getVolume(), Substance::SOLID);
+    return new ChemicalEquation({{reactant1->getMaterial(),1}, {reactant2->getMaterial(),1}},{{product->getMaterial(),1}}, ChemicalEquation::SYNTHESIS);
 }
 
 //chemical reaction for a single-replacement reaction
 //@param string one is an element with charge c1
     //string three and four are the elements of a single compound with charges c3 and c4 respectively
 //@return MaterialData* product1 and product2
-ChemicalEquation ChemistryHelper::singleReaction(std::string one, int c1, std::string three, int c3, std::string four, int c4, Substance* reactant1, Substance* reactant2) {
-    ifstream myfile ("Elements.csv");
-    string line, ion;
-    if (myfile.is_open()) {
-        getline(myfile, line);
-        while (getline(myfile, line)) {
+ChemicalEquation* ChemistryHelper::singleReaction(std::string one, int c1, std::string three, int c3, std::string four, int c4, Substance* reactant1, Substance* reactant2) {
+    QFile qfile(":/csv/Elements");
+    std::string line, ion;
+    if (qfile.open(QIODevice::ReadOnly)) {
+        QTextStream myfile(&qfile);
+        myfile.readLine();
+        while (!myfile.atEnd()) {
+            line = myfile.readLine().toStdString();
             for (int i = 0; i < line.size(); i++) {
                 if (line[i] == ',') {
                     if(one == line.substr(1, i - 2)) {
@@ -54,7 +61,7 @@ ChemicalEquation ChemistryHelper::singleReaction(std::string one, int c1, std::s
                 }
             }
         }
-        myfile.close();
+        qfile.close();
     }
     MaterialData* p1;
     MaterialData* p2;
@@ -72,18 +79,15 @@ ChemicalEquation ChemistryHelper::singleReaction(std::string one, int c1, std::s
         }
         else {p2 = MaterialData::SUBSTANCES[MaterialFormula({{four, 1}}).toString().toStdString()];}
     }
-    Substance* product1;
-    product1->setMaterial(p1);
-    product1->setState(Substance::AQUEOUS);
-    Substance* product2;
-    product2->setMaterial(p2);
+    auto* product1 = new Substance(p1, 0, Substance::AQUEOUS);
+    auto* product2 = new Substance(p2, 0, Substance::AQUEOUS);
     if (p2->form == "H2" || p2->form == "N2" || p2->form == "O2" || p2->form == "F2"|| p2->form == "Cl2") {
         product2->setState(Substance::GAS);
     }
     else if (p2->form == "I2") {product2->setState(Substance::SOLID);}
     else if (p2->form == "Br2") {product2->setState(Substance::LIQUID);}
     else {product2->setState(Substance::AQUEOUS);}
-    return ChemicalEquation({{reactant1->getMaterial(),1}, {reactant2->getMaterial(),1}},{{product1->getMaterial(),1},{product2->getMaterial(),1}});
+    return new ChemicalEquation({{reactant1->getMaterial(),1}, {reactant2->getMaterial(),1}},{{product1->getMaterial(),1},{product2->getMaterial(),1}}, ChemicalEquation::SINGLE_REPLACEMENT);
     //state for product2 is s unless it's a diatomic
 }
 
@@ -91,24 +95,21 @@ ChemicalEquation ChemistryHelper::singleReaction(std::string one, int c1, std::s
 //@param string one and two are elements of a single compound with charges c1 and c2 respectively
     //string three and four are the elements of a single compound with charges c3 and c4 respectively
 //@return MaterialData* product1 and product2
-ChemicalEquation ChemistryHelper::doubleReaction(std::string one, int c1, std::string two, int c2, std::string three,int c3, std::string four, int c4, Substance* reactant1, Substance* reactant2) {
-    Substance* product1;
-    product1->setMaterial(MaterialData::SUBSTANCES[MaterialFormula({{one, c4}, {four, c1}}).toString().toStdString()]);
-    product1->setState(Substance::AQUEOUS);
-    Substance* product2;
-    product2->setMaterial(MaterialData::SUBSTANCES[MaterialFormula({{two, c3}, {three, c4}}).toString().toStdString()]);
-    product2->setState(Substance::AQUEOUS);
-    return ChemicalEquation({{reactant1->getMaterial(),1}, {reactant2->getMaterial(),1}},{{product1->getMaterial(),1},{product2->getMaterial(),1}});
+ChemicalEquation* ChemistryHelper::doubleReaction(std::string one, int c1, std::string two, int c2, std::string three,int c3, std::string four, int c4, Substance* reactant1, Substance* reactant2) {
+    auto* product1 = new Substance(MaterialData::SUBSTANCES[MaterialFormula({{one, c4}, {four, c1}}).toString().toStdString()], 0, Substance::AQUEOUS);
+    auto* product2 = new Substance(MaterialData::SUBSTANCES[MaterialFormula({{three, c4}, {two, c3}}).toString().toStdString()], 0, Substance::AQUEOUS);
+
+    return new ChemicalEquation({{reactant1->getMaterial(),1}, {reactant2->getMaterial(),1}},{{product1->getMaterial(),1},{product2->getMaterial(),1}}, ChemicalEquation::DOUBLE_REPLACEMENT);
 }
 
 //finds the products and returns chemical equation
 //@param two reactants that undergo the chemical reaction
 //@return ChemicalEquation of reactants and products
-ChemicalEquation ChemistryHelper::products(Substance* reactant1, Substance* reactant2) {
+ChemicalEquation* ChemistryHelper::products(Substance* reactant1, Substance* reactant2) {
     std::string part1, part2, part3, part4;
     int charge1 =1, charge2 =1, charge3 =1, charge4 = 1;
     int temp = 0;
-    for (auto i : reactant1->getMaterial()->formula.elements) {
+    for (const auto& i : reactant1->getMaterial()->formula.elements) {
         if (temp == 0) {
             part1 = i.first;
             charge2 = i.second;
@@ -120,7 +121,7 @@ ChemicalEquation ChemistryHelper::products(Substance* reactant1, Substance* reac
         }
     }
     temp = 0;
-    for (auto i : reactant2->getMaterial()->formula.elements) {
+    for (const auto& i : reactant2->getMaterial()->formula.elements) {
         if (temp == 0) {
             part3 = i.first;
             charge4 = i.second;
@@ -131,6 +132,8 @@ ChemicalEquation ChemistryHelper::products(Substance* reactant1, Substance* reac
             charge3 = i.second;
         }
     }
+
+
     if (part2.empty() && part4.empty()) {
         return synthesis(part1, charge1, part3, charge3, reactant1, reactant2);
     }
@@ -180,7 +183,7 @@ void ChemistryHelper::balanceEquation(ChemicalEquation* equation) {
             if (reactantAmts[i->first] != productAmts[i->first]){
                 if(reactantAmts[i->first] > productAmts[i->first]){
                     for (auto it2 = equation->products.begin(); it2 != equation->products.end(); it2++) {
-                        if (it2->first->formula.elements.count(i->first) > 0) {
+                        if (std::find_if(it2->first->formula.elements.begin(), it2->first->formula.elements.end(), [i] (const std::pair<std::string, int>& p) {return p.first == i->first;}) != it2->first->formula.elements.end()) {
                             if(((equation->products[it2->first]) % 2) != 0){
                                 equation->products[it2->first]++;
                             }
@@ -192,7 +195,7 @@ void ChemistryHelper::balanceEquation(ChemicalEquation* equation) {
                 }
                 else if(reactantAmts[i->first] < productAmts[i->first]){
                     for (auto it2 = equation->reactants.begin(); it2 != equation->reactants.end(); it2++) {
-                        if (it2->first->formula.elements.count(i->first) > 0) {
+                        if (std::find_if(it2->first->formula.elements.begin(), it2->first->formula.elements.end(), [i] (const std::pair<std::string, int>& p) {return p.first == i->first;}) != it2->first->formula.elements.end()) {
                             if(((equation->reactants[it2->first]) % 2) != 0){
                                 equation->reactants[it2->first]++;
                             }
