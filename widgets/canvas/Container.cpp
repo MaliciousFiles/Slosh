@@ -46,10 +46,14 @@ void Container::updateLegend() {
         widget->setAutoFillBackground(true);
         widget->setPalette(pal);
 
+        auto* label = new QLabel(s.first->getMaterial()->form + " (" + QString::number(s.first->getVolume()) + " mL)",
+                                 legend);
+        QFont font = label->font();
+        font.setPointSize(10);
+        label->setFont(font);
+
         layout->addWidget(widget, i, 0);
-        layout->addWidget(
-                new QLabel(s.first->getMaterial()->form + " (" + QString::number(s.first->getVolume()) + " mL)",
-                           legend), i, 1);
+        layout->addWidget(label, i, 1);
 
         i++;
     }
