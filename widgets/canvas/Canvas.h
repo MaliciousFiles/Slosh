@@ -7,13 +7,17 @@
 
 
 #include <QWidget>
+#include <QLabel>
 #include "Container.h"
 
 
 class Canvas : public QWidget {
     Q_OBJECT
 
+    QLabel* mascot;
     std::vector<Container*> containers;
+
+    void resizeEvent(QResizeEvent *event) override;
 
 public:
     explicit Canvas(QWidget *parent = nullptr);

@@ -60,7 +60,7 @@ void Container::updateLegend() {
 
     legend->setLayout(layout);
     legend->setFixedWidth(LEGEND_WIDTH);
-    legend->move(width+WALL_WIDTH*2+LEGEND_SPACING, 0);
+    legend->move(width+WALL_WIDTH*2+LEGEND_SPACING, WALL_WIDTH);
     legend->setContentsMargins(2, 5, 2, 5);
     QPalette pal;
     pal.setColor(QPalette::WindowText, Qt::white);
@@ -78,7 +78,7 @@ void Container::setVolume(double volume) {
     width *= PIXELS_PER_CM;
 
     resize(width+WALL_WIDTH*2+LEGEND_SPACING+LEGEND_WIDTH, height+WALL_WIDTH*2);
-    legend->move(width+WALL_WIDTH*2+LEGEND_SPACING, 0);
+    legend->move(width+WALL_WIDTH*2+LEGEND_SPACING, WALL_WIDTH);
 
     styleChildren();
 }
@@ -286,7 +286,7 @@ void Container::mouseMoveEvent(QMouseEvent* event) {
 
         QPoint newPos = (*dragStartPos + point.globalPosition() - point.globalPressPosition()).toPoint();
 
-        newPos.setX(std::clamp(newPos.x(), 0, parentWidget()->width() - rect().width()));
+        newPos.setX(std::clamp(newPos.x(), 0, parentWidget()->width() - (int) (width+WALL_WIDTH*2)));
         newPos.setY(std::clamp(newPos.y(), 0, parentWidget()->height() - rect().height()));
 
         move(newPos);

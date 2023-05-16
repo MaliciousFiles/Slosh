@@ -15,7 +15,8 @@
 //@return MaterialData* product1 and product2
 ChemicalEquation* ChemistryHelper::synthesis(std::string one, int c1, std::string three, int c3, Substance* reactant1, Substance* reactant2) {
     QFile qfile(":/csv/Elements");
-    std::string line, ion;
+    std::string line, cation, anion;
+    int cationCharge = 0, anionCharge = 0;
     if (qfile.open(QIODevice::ReadOnly)) {
         QTextStream myfile(&qfile);
         myfile.readLine();
@@ -24,12 +25,23 @@ ChemicalEquation* ChemistryHelper::synthesis(std::string one, int c1, std::strin
             for (int i = 0; i < line.size(); i++) {
                 if (line[i] == ',') {
                     if(one == line.substr(1, i - 2)) {
-                        c1 = stoi(line.substr(i+1,1));
-                        ion = line.substr(i+3,6);
+                        if (line.substr(i+3,6) == "cation") {
+                            cation = one;
+                            cationCharge = stoi(line.substr(i+1,1));
+                        } else if (line.substr(i+3,5) == "anion") {
+                            anion = one;
+                            anionCharge = stoi(line.substr(i+1,1));
+                        }
                     }
                     if(three == line.substr(1, i - 2)) {
                         c3 = stoi(line.substr(i+1,1));
-                        ion = line.substr(i+3,6);
+                        if (line.substr(i+3,6) == "cation") {
+                            cation = three;
+                            cationCharge = stoi(line.substr(i+1,1));
+                        } else if (line.substr(i+3,5) == "anion") {
+                            anion = three;
+                            anionCharge = stoi(line.substr(i+1,1));
+                        }
                     }
                 }
             }
@@ -37,7 +49,7 @@ ChemicalEquation* ChemistryHelper::synthesis(std::string one, int c1, std::strin
         qfile.close();
     }
 
-    auto* product = new Substance(MaterialData::SUBSTANCES[MaterialFormula({{one, c3}, {three, c1}}).toString().toStdString()], reactant1->getVolume()+reactant2->getVolume(), Substance::SOLID);
+    auto* product = new Substance(MaterialData::SUBSTANCES[MaterialFormula({{cation, anionCharge}, {anion, cationCharge}}).toString().toStdString()], reactant1->getVolume()+reactant2->getVolume(), Substance::SOLID);
     return new ChemicalEquation({{reactant1->getMaterial(),1}, {reactant2->getMaterial(),1}},{{product->getMaterial(),1}}, ChemicalEquation::SYNTHESIS);
 }
 
