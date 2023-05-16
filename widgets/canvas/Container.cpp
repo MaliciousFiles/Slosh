@@ -19,8 +19,8 @@ const double Container::WALL_WIDTH = 10;
 const double Container::LEGEND_WIDTH = 125;
 const double Container::LEGEND_SPACING = 10;
 
-Container::Container(int volume, QWidget *parent) : Clickable(parent), lidded(false), temperature(1000) {
-        setMouseTracking(true);
+Container::Container(int volume, QWidget *parent) : Clickable(parent), lidded(false), temperature(1000), legend(nullptr) {
+    setMouseTracking(true);
     updateLegend();
     setVolume(volume);
     setCursor(Qt::OpenHandCursor);
