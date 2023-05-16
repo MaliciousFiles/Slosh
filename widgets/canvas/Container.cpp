@@ -16,12 +16,54 @@
 const double Container::WH_RATIO = 0.75;
 const double Container::PIXELS_PER_CM = 30;
 const double Container::WALL_WIDTH = 10;
+const double Container::LEGEND_WIDTH = 125;
+const double Container::LEGEND_SPACING = 10;
 
 Container::Container(int volume, QWidget *parent) : Clickable(parent), lidded(false), temperature(1000) {
-    setMouseTracking(true);
+        setMouseTracking(true);
+    updateLegend();
     setVolume(volume);
-
     setCursor(Qt::OpenHandCursor);
+}
+
+void Container::updateLegend() {
+    delete legend;
+
+    legend = new QWidget(this);
+    legend->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+    auto* layout = new QGridLayout(legend);
+
+    int i = 0;
+    for (auto &s : substances) {
+        auto *widget = new QWidget(legend);
+        widget->setFixedSize(15, 15);
+        widget->show();
+
+        QPalette pal;
+        QColor color = s.first->getMaterial()->color;
+        color.setAlpha(255 * 0.25);
+        pal.setColor(QPalette::Window, color);
+        widget->setAutoFillBackground(true);
+        widget->setPalette(pal);
+
+        layout->addWidget(widget, i, 0);
+        layout->addWidget(
+                new QLabel(s.first->getMaterial()->form + " (" + QString::number(s.first->getVolume()) + " mL)",
+                           legend), i, 1);
+
+        i++;
+    }
+
+    legend->setLayout(layout);
+    legend->setFixedWidth(LEGEND_WIDTH);
+    legend->move(width+WALL_WIDTH*2+LEGEND_SPACING, 0);
+    legend->setContentsMargins(2, 5, 2, 5);
+    QPalette pal;
+    pal.setColor(QPalette::WindowText, Qt::white);
+    pal.setColor(QPalette::Window, Qt::darkGray);
+    legend->setAutoFillBackground(true);
+    legend->setPalette(pal);
+    legend->show();
 }
 
 void Container::setVolume(double volume) {
@@ -31,7 +73,8 @@ void Container::setVolume(double volume) {
     height = PIXELS_PER_CM * volume/pow(width, 2);
     width *= PIXELS_PER_CM;
 
-    resize(width+WALL_WIDTH*2, height+WALL_WIDTH*2);
+    resize(width+WALL_WIDTH*2+LEGEND_SPACING+LEGEND_WIDTH, height+WALL_WIDTH*2);
+    legend->move(width+WALL_WIDTH*2+LEGEND_SPACING, 0);
 
     styleChildren();
 }
@@ -76,6 +119,7 @@ void Container::addSubstance(Substance* substance){
         substances[substance] = createSubstanceWidget(substance);
     }
 
+    updateLegend();
     styleChildren();
 
     if (substances.size() == 2) {
@@ -115,6 +159,7 @@ void Container::addSubstance(Substance* substance){
 
                 substances[sub] = createSubstanceWidget(sub);
             }
+            updateLegend();
             styleChildren();
         }
 
@@ -135,6 +180,8 @@ void Container::addSubstance(Substance* substance){
             delete s.second;
         }
         substances.clear();
+
+        updateLegend();
     }
 }
 
@@ -199,6 +246,7 @@ void Container::removeSubstance(MaterialData* material) {
     Substance* s = getSubstance(material);
     delete substances[s];
     substances.erase(substances.find(s));
+    updateLegend();
     styleChildren();
 }
 

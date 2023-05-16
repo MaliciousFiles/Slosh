@@ -16,7 +16,10 @@ class Container : public Clickable {
     const static double WH_RATIO; // w/h
     const static double PIXELS_PER_CM; // px/cm
     const static double WALL_WIDTH; // px
+    const static double LEGEND_WIDTH; // px
+    const static double LEGEND_SPACING; // px
 
+    QWidget* legend;
     std::map<Substance*, QWidget*> substances;
     double volume; // in mL (aka cm^3)
     double width; // in pixels
@@ -28,6 +31,8 @@ class Container : public Clickable {
     void mousePressEvent(QMouseEvent* event) override;
     void mouseMoveEvent(QMouseEvent* event) override;
     void mouseReleaseEvent(QMouseEvent* event) override;
+
+    void updateLegend();
 
 public:
     QWidget* createSubstanceWidget(Substance* substance);
